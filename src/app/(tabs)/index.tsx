@@ -1,31 +1,35 @@
+import { router } from "expo-router";
+import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
+  Image,
   Platform,
+  ScrollView,
   StatusBar,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
 } from "react-native-heroicons/outline";
-import { Image } from "expo-image";
-import { router } from "expo-router";
-import { styles } from "../../theme";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { TrendingMedias, MediaList } from "../../components/index";
 
 const ios = Platform.OS === "ios";
 
 export default function HomeScreen() {
+  const [trending, setTrending] = useState([1, 2, 3, 4, 5]);
+  const [popularMovies, setPopularMovies] = useState([1, 2, 3, 4, 5]);
+  const [popularShows, setPopularShows] = useState([1, 2, 3, 4, 5]);
+  const [topRatedMovies, setTopRatedMovies] = useState([1, 2, 3, 4, 5]);
+  const [topRatedShows, setTopRatedShows] = useState([1, 2, 3, 4, 5]);
   return (
-    <View className="flex-1 bg-zinc-900">
+    <View className="flex-1 bg-zinc-900 pb-5">
       {/* search bar */}
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
         <StatusBar />
         <View className="flex-row justify-between items-center mx-4 my-2">
-          <Bars3CenterLeftIcon size="30" strokeWidth={2} color="white" />
+          <Bars3CenterLeftIcon size="32" strokeWidth={2} color="white" />
           <View className="flex-1 items-center justify-center">
             <Image
               className="flex-1 w-36"
@@ -40,7 +44,22 @@ export default function HomeScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 10 }}
-      ></ScrollView>
+      >
+        {trending.length > 0 && <TrendingMedias data={trending} />}
+
+        {popularMovies.length > 0 && (
+          <MediaList title="Popular Movies" data={popularMovies} />
+        )}
+        {popularShows.length > 0 && (
+          <MediaList title="Popular Tv Shows" data={popularShows} />
+        )}
+        {topRatedMovies.length > 0 && (
+          <MediaList title="Top Rated Movies" data={topRatedMovies} />
+        )}
+        {topRatedShows.length > 0 && (
+          <MediaList title="Top Rated Shows" data={topRatedShows} />
+        )}
+      </ScrollView>
     </View>
   );
 }
