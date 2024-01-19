@@ -9,23 +9,31 @@ import React from "react";
 import Carousel from "react-native-snap-carousel";
 import { router } from "expo-router";
 import { ArrowTrendingUpIcon } from "react-native-heroicons/outline";
+import { fallbackMoviePoster, image500 } from "../../api/mediaDB";
+import { MediaData } from "@/assets/types";
 
 var { width, height } = Dimensions.get("window");
 
-interface TrendingMoviesProps {
-  data: any[];
+interface TrendingMediasProps {
+  data: MediaData[];
+  mediaType: string;
 }
 
-interface MovieCardProps {
-  item: any;
-  handleClick: (item: any) => void;
+interface MediaCardProps {
+  item: MediaData;
+  mediaType: string;
 }
 
-const MediaCard: React.FC<MovieCardProps> = ({ item, handleClick }) => {
+const MediaCard: React.FC<MediaCardProps> = ({ item, mediaType }) => {
+  const handlePress = () => {
+    const route =
+      mediaType === "tv" ? `/streamtv/${item.id}` : `/streammovie/${item.id}`;
+    router.navigate(route);
+  };
   return (
-    <TouchableWithoutFeedback onPress={() => handleClick(item)}>
+    <TouchableWithoutFeedback onPress={handlePress}>
       <Image
-        source={require("../../assets/images/moviePoster2.png")}
+        source={{ uri: image500(item.poster_path) || fallbackMoviePoster }}
         style={{
           width: width * 0.6,
           height: height * 0.4,
@@ -36,13 +44,10 @@ const MediaCard: React.FC<MovieCardProps> = ({ item, handleClick }) => {
   );
 };
 
-export default function TrendingMedias({ data }: TrendingMoviesProps) {
-  const handleClick = (item: any) => {
-    router.push({
-      pathname: "/media",
-      params: { item },
-    });
-  };
+export default function TrendingMedias({
+  data,
+  mediaType,
+}: TrendingMediasProps) {
   return (
     <View className="mb-8">
       <Text className="text-white text-xl mx-4 mb-5">
@@ -52,9 +57,12 @@ export default function TrendingMedias({ data }: TrendingMoviesProps) {
       <Carousel
         data={data}
         renderItem={({ item }) => (
-          <MediaCard item={item} handleClick={handleClick} />
+          <MediaCard item={item} mediaType={mediaType} />
         )}
         firstItem={1}
+        autoplay
+        autoplayInterval={5000}
+        loop
         inactiveSlideOpacity={0.6}
         sliderWidth={width}
         itemWidth={width * 0.62}
