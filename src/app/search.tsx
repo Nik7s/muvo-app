@@ -90,8 +90,15 @@ export default function SearchScreen() {
           </Text>
           <View className="flex-row justify-between flex-wrap">
             {results.map((result) => {
+              const route =
+                result.mediaType === "tv"
+                  ? `/streamtv/${result.id}`
+                  : `/streammovie/${result.id}`;
               return (
-                <TouchableWithoutFeedback key={result.id}>
+                <TouchableWithoutFeedback
+                  key={result.id}
+                  onPress={() => router.navigate(route)}
+                >
                   <View className="space-y-2 mb-4">
                     <Image
                       source={{

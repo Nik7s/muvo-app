@@ -1,20 +1,57 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from "react-native";
-import React from "react";
-import { router } from "expo-router";
-var { width, height } = Dimensions.get("window");
-
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import React, { memo } from "react";
+import { fallbackPersonImage, image185 } from "@/api/mediaDB";
+import MarqueeView from "react-native-marquee-view";
+import * as WebBrowser from "expo-web-browser";
 interface CastProps {
-  cast: any;
+  cast: {
+    id: number;
+    profile_path: string;
+    name: string;
+    character: string;
+  }[];
 }
 
+const CastItem = memo(({ person }: { person: any }) => (
+  <TouchableOpacity
+    className="mr-4 items-center"
+    onPress={() =>
+      WebBrowser.openBrowserAsync(
+        `https://www.google.com/search?q=${person.name}`
+      )
+    }
+  >
+    <View className="overflow-hidden rounded-full h-20 w-20 items-center">
+      <Image
+        className="rounded-2xl h-24 w-20"
+        source={{
+          uri: image185(person?.profile_path) || fallbackPersonImage,
+        }}
+      />
+    </View>
+    {person?.original_name.length > 14 ? (
+      <MarqueeView style={{ width: 80 }}>
+        <Text className="text-sm text-white">{person?.original_name}</Text>
+      </MarqueeView>
+    ) : (
+      <Text className="text-sm text-white">{person?.original_name}</Text>
+    )}
+    {person?.character.length > 14 ? (
+      <MarqueeView style={{ width: 80 }}>
+        <Text className="text-neutral-400 text-xs text-center">
+          {person?.character}
+        </Text>
+      </MarqueeView>
+    ) : (
+      <Text className="text-neutral-400 text-xs text-center">
+        {person?.character}
+      </Text>
+    )}
+  </TouchableOpacity>
+));
+
 export default function Cast({ cast }: CastProps) {
+  const top10Cast = cast.slice(0, 9);
   return (
     <View className="my-6">
       <Text className="text-white text-lg mx-4 mb-5">Top Cast</Text>
@@ -24,21 +61,9 @@ export default function Cast({ cast }: CastProps) {
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
         {cast &&
-          cast.map((person: any, index: number) => {
-            return (
-              <TouchableOpacity key={index} className="mr-4 items-center">
-                <View className="overflow-hidden rounded-full h-20 w-20 items-center">
-                  <Image
-                    className="rounded-2xl h-24 w-20"
-                    source={require("../../assets/images/castImage2.png")}
-                  />
-                </View>
-
-                <Text className="text-white text-xs mt-1">John Wick</Text>
-                <Text className="text-neutral-400 text-xs">Keenu Reaves</Text>
-              </TouchableOpacity>
-            );
-          })}
+          top10Cast.map((person: any, index: number) => (
+            <CastItem key={index} person={person} />
+          ))}
       </ScrollView>
     </View>
   );

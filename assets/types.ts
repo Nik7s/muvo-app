@@ -18,6 +18,7 @@ export type MediaData = {
   poster_path: string;
   release_date?: string;
   created_by?: Array<{}>;
+  runtime: string;
   episode_run_time?: number[];
   first_air_date?: string;
   homepage?: string;

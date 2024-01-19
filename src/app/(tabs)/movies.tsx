@@ -83,6 +83,7 @@ export default function MovieScreen() {
               title="Popular Movies"
               data={popularMovies}
               mediaType="movie"
+              hideSeeAll={false}
             />
           )}
           {topRatedMovies.length > 0 && (
@@ -90,6 +91,7 @@ export default function MovieScreen() {
               title="Top Rated Movies"
               data={topRatedMovies}
               mediaType="movie"
+              hideSeeAll={false}
             />
           )}
         </ScrollView>

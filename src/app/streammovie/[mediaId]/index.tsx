@@ -7,27 +7,71 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { router, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { ArrowLeftIcon, ChevronLeftIcon } from "react-native-heroicons/outline";
-import { HeartIcon } from "react-native-heroicons/solid";
+import { ChevronLeftIcon } from "react-native-heroicons/outline";
+import { HeartIcon, PlayIcon } from "react-native-heroicons/solid";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Cast, MediaList } from "@/src/components";
-// import { fallbackMoviePoster, fetchTVorMovieCreditsByID, fetchTVorMovieDetailsByID, fetchRecommendedTVorMovies, image500 } from '../../../../api/mediaDB';
+import { Button, Cast, Loading, MediaList } from "@/src/components";
+import {
+  fallbackMoviePoster,
+  fetchTVorMovieCreditsByID,
+  fetchTVorMovieDetailsByID,
+  fetchRecommendedTVorMovies,
+  fetchSimilarTVorMovies,
+  image500,
+} from "../../../../api/mediaDB";
 import { styles, theme } from "../../../theme/index";
+import { MediaData } from "@/assets/types";
 
 const ios = Platform.OS == "ios";
 const topMargin = ios ? "" : " mt-3";
 var { width, height } = Dimensions.get("window");
 
 export default function MovieScreen() {
-  const { setParams: item } = useRouter();
-  const [movie, setMovie] = useState({});
+  const { mediaId } = useLocalSearchParams<{ mediaId: string }>();
+  const [movie, setMovie] = useState<MediaData | null>(null);
   const [cast, setCast] = useState([]);
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [isFavourite, toggleFavourite] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const isComingSoon = new Date(movie?.release_date ?? "") > new Date();
+
+  useEffect(() => {
+    setLoading(true);
+    getMovieDetails(mediaId);
+    getMovieCredits(mediaId);
+    getRecommendedMovies(mediaId);
+    getSimilarMovies(mediaId);
+  }, [mediaId]);
+
+  const getMovieDetails = async (id: string) => {
+    const data = await fetchTVorMovieDetailsByID("movie", id);
+    setLoading(false);
+    if (data) {
+      setMovie({ ...movie, ...data });
+    }
+  };
+  const getMovieCredits = async (id: string) => {
+    const data = await fetchTVorMovieCreditsByID("movie", id);
+    if (data && data.cast) {
+      setCast(data.cast);
+    }
+  };
+  const getRecommendedMovies = async (id: string) => {
+    const data = await fetchRecommendedTVorMovies("movie", id);
+    if (data && data.results) {
+      setRecommendedMovies(data.results);
+    }
+  };
+  const getSimilarMovies = async (id: string) => {
+    const data = await fetchSimilarTVorMovies("movie", id);
+    if (data && data.results) {
+      setSimilarMovies(data.results);
+    }
+  };
 
   return (
     <ScrollView
@@ -57,67 +101,91 @@ export default function MovieScreen() {
             />
           </TouchableOpacity>
         </SafeAreaView>
-        <View>
-          <Image
-            source={require("../../../../assets/images/moviePoster1.png")}
-            style={{ width, height: height * 0.55 }}
-          />
-          <LinearGradient
-            colors={[
-              "transparent",
-              "rgba(23, 23, 23, 0.8)",
-              "rgba(23, 23, 23, 1)",
-            ]}
-            style={{ width, height: height * 0.35 }}
-            className="absolute bottom-0"
-          />
-        </View>
+        {loading ? (
+          <Loading />
+        ) : (
+          <View>
+            <Image
+              source={{
+                //@ts-ignore
+                uri: image500(movie?.poster_path) || fallbackMoviePoster,
+              }}
+              style={{ width, height: height * 0.55 }}
+            />
+            <LinearGradient
+              colors={[
+                "transparent",
+                "rgba(23, 23, 23, 0.8)",
+                "rgba(23, 23, 23, 1)",
+              ]}
+              style={{ width, height: height * 0.35 }}
+              className="absolute bottom-0"
+            />
+          </View>
+        )}
       </View>
-
-      {/* movie details */}
 
       <View style={{ marginTop: -(height * 0.12) }} className="space-y-3">
         {/* title */}
         <Text className="text-white text-center text-3xl font-bold tracking-widest">
-          Captain Marvel
+          {movie?.title}
         </Text>
-
-        {/* status, release year, runtime */}
-        <Text className="text-neutral-400 font-semibold text-base text-center flex-row justify-center mx-4 space-x-2">
-          2019 • 2h 4min • Released
-        </Text>
-
-        <View className="flex-row justify-center mx-4 space-x-2">
-          <Text className="text-indigo-500 font-semibold text-base text-center">
-            Action • Adventure • Science Fiction
-          </Text>
-        </View>
-
-        {/* description */}
+        {movie?.id ? (
+          <View>
+            <Text className="text-neutral-400 font-semibold text-base text-center">
+              {movie?.release_date?.split("-")[0] || "N/A"} |{" "}
+              {`${Math.floor(Number(movie?.runtime) / 60)}h ${
+                Number(movie?.runtime) % 60
+              }min`}{" "}
+              |{" "}
+              <Text className="text-indigo-500 text-center">
+                {movie?.genres.map((genre) => genre.name).join(", ")}
+              </Text>
+            </Text>
+            <View className="flex-row justify-evenly my-4">
+              {!isComingSoon ? (
+                <Button
+                  onClick={() => router.push(`/streammovie/${mediaId}/watch`)}
+                  label="Watch Now"
+                  icon={<PlayIcon size="20" color="black" />}
+                />
+              ) : (
+                <Button
+                  label="Coming Soon"
+                  disabled={true}
+                  icon={<PlayIcon size="20" color="black" />}
+                />
+              )}
+              <Button
+                onClick={() => {}}
+                label="Play Trailer"
+                icon={<PlayIcon size="20" color="black" />}
+              />
+            </View>
+          </View>
+        ) : null}
         <Text className="text-neutral-400 mx-4 tracking-wide text-center">
-          The story follows Carol Danvers as she becomes one of the universe’s
-          most powerful heroes when Earth is caught in the middle of a galactic
-          war between two alien races. Set in the 1990s, Captain Marvel is an
-          all-new adventure from a previously unseen period in the history of
-          the Marvel Cinematic Universe.
+          {movie?.overview}
         </Text>
       </View>
+      {movie?.id && cast.length > 0 && <Cast cast={cast} />}
+      {movie?.id && recommendedMovies.length > 0 && (
+        <MediaList
+          title={"Recommended Movies"}
+          data={recommendedMovies}
+          hideSeeAll={true}
+          mediaType="movie"
+        />
+      )}
 
-      {/* cast */}
-      <Cast cast={cast} />
-
-      {/* Recommended movies section */}
-      <MediaList
-        title={"Recommended Movies"}
-        data={recommendedMovies}
-        mediaType="movie"
-      />
-      {/* similar movies section */}
-      <MediaList
-        title={"Similar Movies"}
-        data={similarMovies}
-        mediaType="movie"
-      />
+      {movie?.id && similarMovies.length > 0 && (
+        <MediaList
+          title={"Similar Movies"}
+          data={similarMovies}
+          hideSeeAll={true}
+          mediaType="movie"
+        />
+      )}
     </ScrollView>
   );
 }

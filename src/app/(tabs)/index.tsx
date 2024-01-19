@@ -95,6 +95,7 @@ export default function HomeScreen() {
               title="Popular Movies"
               data={popularMovies}
               mediaType="movie"
+              hideSeeAll={false}
             />
           )}
           {popularShows.length > 0 && (
@@ -102,6 +103,7 @@ export default function HomeScreen() {
               title="Popular Tv Shows"
               data={popularShows}
               mediaType="tv"
+              hideSeeAll={false}
             />
           )}
           {topRatedMovies.length > 0 && (
@@ -109,6 +111,7 @@ export default function HomeScreen() {
               title="Top Rated Movies"
               data={topRatedMovies}
               mediaType="movie"
+              hideSeeAll={false}
             />
           )}
           {topRatedShows.length > 0 && (
@@ -116,6 +119,7 @@ export default function HomeScreen() {
               title="Top Rated Shows"
               data={topRatedShows}
               mediaType="tv"
+              hideSeeAll={false}
             />
           )}
         </ScrollView>

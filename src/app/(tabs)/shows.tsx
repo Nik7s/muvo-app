@@ -83,6 +83,7 @@ export default function TvShowScreen() {
               title="Popular Tv Shows"
               data={popularShows}
               mediaType="tv"
+              hideSeeAll={false}
             />
           )}
           {topRatedShows.length > 0 && (
@@ -90,6 +91,7 @@ export default function TvShowScreen() {
               title="Top Rated Shows"
               data={topRatedShows}
               mediaType="tv"
+              hideSeeAll={false}
             />
           )}
         </ScrollView>

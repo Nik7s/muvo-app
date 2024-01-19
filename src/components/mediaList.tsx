@@ -18,9 +18,15 @@ interface mediaListProps {
   title: string;
   data: any[];
   mediaType: string;
+  hideSeeAll: boolean;
 }
 
-export default function MediaList({ title, data, mediaType }: mediaListProps) {
+export default function MediaList({
+  title,
+  data,
+  mediaType,
+  hideSeeAll,
+}: mediaListProps) {
   const handlePress = (item: MediaData) => {
     const route =
       mediaType === "tv" ? `/streamtv/${item.id}` : `/streammovie/${item.id}`;
@@ -30,11 +36,13 @@ export default function MediaList({ title, data, mediaType }: mediaListProps) {
     <View className="mb-8 space-y-4">
       <View className="mx-4 flex-row justify-between items-center">
         <Text className="text-white text-lg">{title}</Text>
-        <TouchableOpacity>
-          <Text style={styles.text} className="text-lg">
-            See All
-          </Text>
-        </TouchableOpacity>
+        {!hideSeeAll && (
+          <TouchableOpacity>
+            <Text style={styles.text} className="text-lg">
+              See All
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <ScrollView
