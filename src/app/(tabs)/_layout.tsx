@@ -3,12 +3,7 @@ import { View, useColorScheme } from "react-native";
 import Colors from "../../constants/Colors";
 import { BottomTabBar } from "@react-navigation/bottom-tabs";
 import React from "react";
-import {
-  FilmIcon,
-  HeartIcon,
-  HomeIcon,
-  TvIcon,
-} from "react-native-heroicons/solid";
+import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -44,7 +39,7 @@ export default function TabLayout() {
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <HomeIcon size="24" strokeWidth={2} color={color} />
+            <AntDesign name="home" size={24} color={color} />
           ),
         }}
       />
@@ -54,7 +49,7 @@ export default function TabLayout() {
           title: "Movies",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <FilmIcon size="24" strokeWidth={2} color={color} />
+            <MaterialCommunityIcons name="movie-open" size={24} color={color} />
           ),
         }}
       />
@@ -64,7 +59,7 @@ export default function TabLayout() {
           title: "Tv Shows",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TvIcon size="24" strokeWidth={2} color={color} />
+            <Feather name="tv" size={24} color={color} />
           ),
         }}
       />
@@ -74,7 +69,7 @@ export default function TabLayout() {
           title: "Favorites",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <HeartIcon size="24" strokeWidth={2} color={color} />
+            <AntDesign name="heart" size={24} color={color} />
           ),
         }}
       />

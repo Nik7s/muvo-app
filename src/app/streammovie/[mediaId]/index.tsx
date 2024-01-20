@@ -1,33 +1,30 @@
 import {
   View,
   Text,
-  Image,
-  Dimensions,
   TouchableOpacity,
   ScrollView,
-  Platform,
+  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-import { ChevronLeftIcon } from "react-native-heroicons/outline";
-import { HeartIcon, PlayIcon } from "react-native-heroicons/solid";
+import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, Cast, Loading, MediaList } from "@/src/components";
 import {
-  fallbackMoviePoster,
+  Button,
+  Cast,
+  Loading,
+  MediaList,
+  VideoTrailer,
+} from "@/src/components";
+import {
   fetchTVorMovieCreditsByID,
   fetchTVorMovieDetailsByID,
   fetchRecommendedTVorMovies,
   fetchSimilarTVorMovies,
-  image500,
+  fetchTVorMovieVideosByID,
+  fetchTVorMovieContentRatingByID,
 } from "../../../../api/mediaDB";
-import { styles, theme } from "../../../theme/index";
 import { MediaData } from "@/assets/types";
-
-const ios = Platform.OS == "ios";
-const topMargin = ios ? "" : " mt-3";
-var { width, height } = Dimensions.get("window");
 
 export default function MovieScreen() {
   const { mediaId } = useLocalSearchParams<{ mediaId: string }>();
@@ -35,7 +32,7 @@ export default function MovieScreen() {
   const [cast, setCast] = useState([]);
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
-  const [isFavourite, toggleFavourite] = useState(false);
+  const [trailerVideoId, setTrailerVideoId] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const isComingSoon = new Date(movie?.release_date ?? "") > new Date();
 
@@ -45,6 +42,7 @@ export default function MovieScreen() {
     getMovieCredits(mediaId);
     getRecommendedMovies(mediaId);
     getSimilarMovies(mediaId);
+    getTrailerVideoId(mediaId);
   }, [mediaId]);
 
   const getMovieDetails = async (id: string) => {
@@ -60,12 +58,26 @@ export default function MovieScreen() {
       setCast(data.cast);
     }
   };
+
+  const getTrailerVideoId = async (id: string) => {
+    const data = await fetchTVorMovieVideosByID("movie", id);
+    if (data && data.results) {
+      const trailer = data.results.find(
+        (video: { type: string }) => video.type === "Trailer"
+      );
+      if (trailer) {
+        setTrailerVideoId(trailer.key);
+      }
+    }
+  };
+
   const getRecommendedMovies = async (id: string) => {
     const data = await fetchRecommendedTVorMovies("movie", id);
     if (data && data.results) {
       setRecommendedMovies(data.results);
     }
   };
+
   const getSimilarMovies = async (id: string) => {
     const data = await fetchSimilarTVorMovies("movie", id);
     if (data && data.results) {
@@ -74,118 +86,107 @@ export default function MovieScreen() {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{ paddingBottom: 20 }}
-      className="flex-1 bg-neutral-900"
-    >
-      {/* back button and movie poster */}
-      <View className="w-full">
-        <SafeAreaView
-          className={
-            "absolute z-20 w-full flex-row justify-between items-center px-4 " +
-            topMargin
-          }
-        >
-          <TouchableOpacity
-            style={styles.background}
-            className="rounded-xl p-1"
-            onPress={() => router.back()}
-          >
-            <ChevronLeftIcon size="28" strokeWidth={2.5} color="white" />
-          </TouchableOpacity>
+    <View className="flex-1">
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 20 }}
+        className="flex-1 bg-zinc-900"
+      >
+        <View className="w-full">
+          <SafeAreaView className="absolute z-20 w-full flex-row-reverse px-5 py-2">
+            <TouchableOpacity onPress={() => router.back()}>
+              <Feather name="x" size={24} color="white" />
+            </TouchableOpacity>
+          </SafeAreaView>
+          {loading ? (
+            <Loading />
+          ) : (
+            <VideoTrailer
+              videoId={trailerVideoId}
+              thumbnailUrl={movie?.backdrop_path || movie?.poster_path}
+            />
+          )}
+        </View>
 
-          <TouchableOpacity onPress={() => toggleFavourite(!isFavourite)}>
-            <HeartIcon
-              size="35"
-              color={isFavourite ? theme.background : "white"}
-            />
-          </TouchableOpacity>
-        </SafeAreaView>
-        {loading ? (
-          <Loading />
-        ) : (
-          <View>
-            <Image
-              source={{
-                //@ts-ignore
-                uri: image500(movie?.poster_path) || fallbackMoviePoster,
-              }}
-              style={{ width, height: height * 0.55 }}
-            />
-            <LinearGradient
-              colors={[
-                "transparent",
-                "rgba(23, 23, 23, 0.8)",
-                "rgba(23, 23, 23, 1)",
-              ]}
-              style={{ width, height: height * 0.35 }}
-              className="absolute bottom-0"
-            />
-          </View>
-        )}
-      </View>
-
-      <View style={{ marginTop: -(height * 0.12) }} className="space-y-3">
-        {/* title */}
-        <Text className="text-white text-center text-3xl font-bold tracking-widest">
-          {movie?.title}
-        </Text>
-        {movie?.id ? (
-          <View>
-            <Text className="text-neutral-400 font-semibold text-base text-center">
-              {movie?.release_date?.split("-")[0] || "N/A"} |{" "}
-              {`${Math.floor(Number(movie?.runtime) / 60)}h ${
-                Number(movie?.runtime) % 60
-              }min`}{" "}
-              |{" "}
-              <Text className="text-indigo-500 text-center">
-                {movie?.genres.map((genre) => genre.name).join(", ")}
-              </Text>
+        <View className="space-y-3">
+          {/* title */}
+          <View className="mt-4">
+            <Text className="text-white text-center text-5xl font-extralight tracking-widest">
+              {movie?.title}
             </Text>
-            <View className="flex-row justify-evenly my-4">
-              {!isComingSoon ? (
-                <Button
-                  onClick={() => router.push(`/streammovie/${mediaId}/watch`)}
-                  label="Watch Now"
-                  icon={<PlayIcon size="20" color="black" />}
-                />
-              ) : (
-                <Button
-                  label="Coming Soon"
-                  disabled={true}
-                  icon={<PlayIcon size="20" color="black" />}
-                />
-              )}
-              <Button
-                onClick={() => {}}
-                label="Play Trailer"
-                icon={<PlayIcon size="20" color="black" />}
-              />
-            </View>
+            <Text className="text-neutral-300 text-center italic font-extralight">
+              {movie?.tagline}
+            </Text>
           </View>
-        ) : null}
-        <Text className="text-neutral-400 mx-4 tracking-wide text-center">
-          {movie?.overview}
-        </Text>
-      </View>
-      {movie?.id && cast.length > 0 && <Cast cast={cast} />}
-      {movie?.id && recommendedMovies.length > 0 && (
-        <MediaList
-          title={"Recommended Movies"}
-          data={recommendedMovies}
-          hideSeeAll={true}
-          mediaType="movie"
-        />
-      )}
+          {movie?.id ? (
+            <View>
+              <Text className="text-neutral-400 font-medium text-base text-center">
+                {movie?.release_date?.split("-")[0] || "N/A"} •{" "}
+                {`${Math.floor(Number(movie?.runtime) / 60)}h ${
+                  Number(movie?.runtime) % 60
+                }min`}{" "}
+                • <Text className="text-sm">UA 13+</Text>
+              </Text>
+              <View className="w-full my-4">
+                {!isComingSoon ? (
+                  <Button
+                    onClick={() => router.push(`/streammovie/${mediaId}/watch`)}
+                    label="Watch Now"
+                    icon={
+                      <Ionicons name="play-sharp" size={20} color="black" />
+                    }
+                  />
+                ) : (
+                  <Button
+                    label="Coming Soon"
+                    disabled={true}
+                    icon={
+                      <MaterialCommunityIcons
+                        name="timer-sand"
+                        size={20}
+                        color="black"
+                      />
+                    }
+                  />
+                )}
+              </View>
+              <View className="flex-row items-center justify-center pb-3">
+                {movie?.genres.map((genre, index) => (
+                  <View
+                    key={genre.name}
+                    style={{ flexDirection: "row", alignItems: "center" }}
+                  >
+                    <Text className="text-indigo-600">{genre.name}</Text>
+                    {index < movie.genres.length - 1 && (
+                      <Text className="text-indigo-400 mx-1">|</Text>
+                    )}
+                  </View>
+                ))}
+              </View>
+              <Text className="text-neutral-400 mx-4 tracking-wide text-center">
+                {movie?.overview}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        {movie?.id && cast.length > 0 && <Cast cast={cast} />}
+        {movie?.id && recommendedMovies.length > 0 && (
+          <MediaList
+            title={"Recommended Movies"}
+            data={recommendedMovies}
+            hideSeeAll={true}
+            mediaType="movie"
+          />
+        )}
 
-      {movie?.id && similarMovies.length > 0 && (
-        <MediaList
-          title={"Similar Movies"}
-          data={similarMovies}
-          hideSeeAll={true}
-          mediaType="movie"
-        />
-      )}
-    </ScrollView>
+        {movie?.id && similarMovies.length > 0 && (
+          <MediaList
+            title={"Similar Movies"}
+            data={similarMovies}
+            hideSeeAll={true}
+            mediaType="movie"
+          />
+        )}
+      </ScrollView>
+    </View>
   );
 }

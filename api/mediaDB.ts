@@ -18,6 +18,10 @@ const searchMediaEndpoint = (type: string, query: string) =>
 
 const mediaDetailsEndpoint = (type: string, id: string) =>
   `${BASE_URL}/${type}/${id}?api_key=${API_KEY}&language=en-US`;
+const mediaContentRatingEndpoint = (type: string, id: string) =>
+  `${BASE_URL}/${type}/${id}/content_ratings?api_key=${API_KEY}&language=en-US`;
+const mediaVideosEndpoint = (type: string, id: string) =>
+  `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=en-US`;
 const mediaCreditsEndpoint = (type: string, id: string) =>
   `${BASE_URL}/${type}/${id}/credits?api_key=${API_KEY}&language=en-US`;
 const recommendedMediaEndpoint = (type: string, id: string) =>
@@ -63,9 +67,14 @@ export const fetchTopRatedMedias = (type: string) => {
   return apiCall(topRatedMediaEndpoint(type));
 };
 
-// movie screen apis
 export const fetchTVorMovieDetailsByID = (type: string, id: string) => {
   return apiCall(mediaDetailsEndpoint(type, id));
+};
+export const fetchTVorMovieContentRatingByID = (type: string, id: string) => {
+  return apiCall(mediaContentRatingEndpoint(type, id));
+};
+export const fetchTVorMovieVideosByID = (type: string, id: string) => {
+  return apiCall(mediaVideosEndpoint(type, id));
 };
 export const fetchTVorMovieCreditsByID = (type: string, id: string) => {
   return apiCall(mediaCreditsEndpoint(type, id));

@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { XMarkIcon } from "react-native-heroicons/outline";
 import { debounce } from "lodash";
 import { router } from "expo-router";
 import { Loading } from "@/src/components";
@@ -21,6 +20,7 @@ import {
 } from "@/api/mediaDB";
 import { MediaData } from "@/assets/types";
 import MarqueeView from "react-native-marquee-view";
+import { Feather } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
@@ -74,7 +74,7 @@ export default function SearchScreen() {
           onPress={() => router.navigate("/")}
           className="rounded-full p-3 m-1 bg-zinc-700"
         >
-          <XMarkIcon size="25" color="white" />
+          <Feather name="x" size={24} color="white" />
         </TouchableOpacity>
       </View>
       {loading ? (

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import React, { memo } from "react";
 import { fallbackPersonImage, image185 } from "@/api/mediaDB";
 import MarqueeView from "react-native-marquee-view";
@@ -55,16 +55,14 @@ export default function Cast({ cast }: CastProps) {
   return (
     <View className="my-6">
       <Text className="text-white text-lg mx-4 mb-5">Top Cast</Text>
-      <ScrollView
+      <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
-      >
-        {cast &&
-          top10Cast.map((person: any, index: number) => (
-            <CastItem key={index} person={person} />
-          ))}
-      </ScrollView>
+        data={top10Cast}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => <CastItem key={index} person={item} />}
+      />
     </View>
   );
 }

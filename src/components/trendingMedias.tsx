@@ -8,9 +8,9 @@ import {
 import React from "react";
 import Carousel from "react-native-snap-carousel";
 import { router } from "expo-router";
-import { ArrowTrendingUpIcon } from "react-native-heroicons/outline";
 import { fallbackMoviePoster, image500 } from "../../api/mediaDB";
 import { MediaData } from "@/assets/types";
+import { Feather } from "@expo/vector-icons";
 
 var { width, height } = Dimensions.get("window");
 
@@ -52,7 +52,7 @@ export default function TrendingMedias({
     <View className="mb-8">
       <Text className="text-white text-xl mx-4 mb-5">
         <Text>Trending Now </Text>
-        <ArrowTrendingUpIcon size="24" strokeWidth={1.5} color="white" />
+        <Feather name="trending-up" size={24} color="white" />
       </Text>
       <Carousel
         data={data}

@@ -7,27 +7,10 @@ interface ButtonProps {
   disabled?: boolean;
   icon?: React.ReactElement;
   label: string;
-  className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  onClick,
-  href,
-  disabled,
-  icon,
-  label,
-}) => {
-  const buttonClass = `bg-white rounded-lg px-4 py-3 flex-row items-center space-x-2`;
-
-  if (href) {
-    return (
-      <TouchableOpacity onPress={onClick} className={buttonClass}>
-        {icon && React.cloneElement(icon)}
-        <Text>{label}</Text>
-      </TouchableOpacity>
-    );
-  }
-
+const Button: React.FC<ButtonProps> = ({ onClick, disabled, icon, label }) => {
+  const buttonClass = `bg-white rounded-lg py-3 flex-row items-center justify-center space-x-1 mx-2`;
   return (
     <TouchableOpacity
       onPress={onClick}
@@ -37,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
     >
       {icon && React.cloneElement(icon)}
-      <Text>{label}</Text>
+      <Text className="text-base font-medium text-zinc-800">{label}</Text>
     </TouchableOpacity>
   );
 };

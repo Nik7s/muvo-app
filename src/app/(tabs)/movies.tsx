@@ -8,10 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {
-  Bars3CenterLeftIcon,
-  MagnifyingGlassIcon,
-} from "react-native-heroicons/outline";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TrendingMedias, MediaList, Loading } from "@/src/components";
 import {
@@ -19,6 +15,7 @@ import {
   fetchTopRatedMedias,
   fetchTrendingMedias,
 } from "@/api/mediaDB";
+import { Feather, Octicons } from "@expo/vector-icons";
 
 const ios = Platform.OS === "ios";
 
@@ -49,12 +46,12 @@ export default function MovieScreen() {
   };
 
   return (
-    <View className="flex-1 bg-zinc-900 pb-5">
+    <View className="flex-1 bg-zinc-900">
       {/* search bar */}
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
         <StatusBar />
         <View className="flex-row justify-between items-center mx-4 my-2">
-          <Bars3CenterLeftIcon size="32" strokeWidth={2} color="white" />
+          <Octicons name="three-bars" size={30} color="white" />
           <View className="flex-1 items-center justify-center">
             <Image
               className="flex-1 w-36"
@@ -62,7 +59,7 @@ export default function MovieScreen() {
             />
           </View>
           <TouchableOpacity onPress={() => router.replace("/search")}>
-            <MagnifyingGlassIcon size="30" strokeWidth={2} color="white" />
+            <Feather name="search" size={30} color="white" />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -72,7 +69,7 @@ export default function MovieScreen() {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}
+          contentContainerStyle={{ paddingBottom: 30 }}
         >
           {trending.length > 0 && (
             <TrendingMedias data={trending} mediaType="movie" />
