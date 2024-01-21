@@ -71,9 +71,7 @@ export default function MovieScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
-          {trending.length > 0 && (
-            <TrendingMedias data={trending} mediaType="movie" />
-          )}
+          {trending.length > 0 && <TrendingMedias data={trending} />}
 
           {popularMovies.length > 0 && (
             <MediaList

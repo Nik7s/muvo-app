@@ -71,9 +71,7 @@ export default function TvShowScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
-          {trending.length > 0 && (
-            <TrendingMedias data={trending} mediaType="tv" />
-          )}
+          {trending.length > 0 && <TrendingMedias data={trending} />}
 
           {popularShows.length > 0 && (
             <MediaList

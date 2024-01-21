@@ -16,18 +16,18 @@ var { width, height } = Dimensions.get("window");
 
 interface TrendingMediasProps {
   data: MediaData[];
-  mediaType: string;
 }
 
 interface MediaCardProps {
   item: MediaData;
-  mediaType: string;
 }
 
-const MediaCard: React.FC<MediaCardProps> = ({ item, mediaType }) => {
+const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
   const handlePress = () => {
     const route =
-      mediaType === "tv" ? `/streamtv/${item.id}` : `/streammovie/${item.id}`;
+      item.media_type === "tv"
+        ? `/streamtv/${item.id}`
+        : `/streammovie/${item.id}`;
     router.navigate(route);
   };
   return (
@@ -44,10 +44,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, mediaType }) => {
   );
 };
 
-export default function TrendingMedias({
-  data,
-  mediaType,
-}: TrendingMediasProps) {
+export default function TrendingMedias({ data }: TrendingMediasProps) {
   return (
     <View className="mb-8">
       <Text className="text-white text-xl mx-4 mb-5">
@@ -56,9 +53,7 @@ export default function TrendingMedias({
       </Text>
       <Carousel
         data={data}
-        renderItem={({ item }) => (
-          <MediaCard item={item} mediaType={mediaType} />
-        )}
+        renderItem={({ item }) => <MediaCard item={item} />}
         firstItem={1}
         autoplay
         autoplayInterval={5000}

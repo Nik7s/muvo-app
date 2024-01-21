@@ -42,14 +42,8 @@ export default function HomeScreen() {
       fetchTrendingMedias("tv"),
     ]);
     const trendingAll = [
-      ...(tvData?.results).slice(0, 5).map((result: any) => ({
-        ...result,
-        mediaType: "tv",
-      })),
-      ...(movieData?.results).slice(0, 5).map((result: any) => ({
-        ...result,
-        mediaType: "movie",
-      })),
+      ...tvData?.results.slice(0, 5),
+      ...movieData?.results.slice(0, 5),
     ];
     setTrending(trendingAll);
     setLoading(false);
@@ -97,12 +91,7 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
-          {trending.length > 0 && (
-            <TrendingMedias
-              data={trending}
-              mediaType={trending[0]?.mediaType || ""}
-            />
-          )}
+          {trending.length > 0 && <TrendingMedias data={trending} />}
 
           {popularMovies.length > 0 && (
             <MediaList
