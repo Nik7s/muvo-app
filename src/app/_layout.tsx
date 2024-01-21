@@ -51,7 +51,23 @@ function RootLayoutNav() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="streammovie/[mediaId]/[videoKey]"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="streammovie/[mediaId]/watch"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="streamtv/[mediaId]/index"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="streamtv/[mediaId]/[videoKey]"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="streamtv/[mediaId]/[season]/[episode]/watch"
           options={{ headerShown: false }}
         />
         <Stack.Screen name="search" options={{ headerShown: false }} />

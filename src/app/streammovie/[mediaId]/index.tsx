@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-} from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +9,7 @@ import {
   Loading,
   MediaActions,
   MediaList,
+  VideoSection,
   VideoTrailer,
 } from "@/src/components";
 import {
@@ -25,7 +20,7 @@ import {
   fetchTVorMovieVideosByID,
   fetchMovieContentRatingByID,
 } from "../../../../api/mediaDB";
-import { MediaData } from "@/assets/types";
+import { MediaData, VideoDataItem } from "@/assets/types";
 
 export default function MovieScreen() {
   const { mediaId } = useLocalSearchParams<{ mediaId: string }>();
@@ -33,10 +28,11 @@ export default function MovieScreen() {
   const [cast, setCast] = useState([]);
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
-  const [trailerVideoId, setTrailerVideoId] = useState<string>("");
+  const [videosData, setVideosData] = useState<VideoDataItem[]>([]);
   const [contentRating, setContentRating] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const isComingSoon = new Date(movie?.release_date ?? "") > new Date();
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -45,7 +41,10 @@ export default function MovieScreen() {
     getContentRating(mediaId);
     getRecommendedMovies(mediaId);
     getSimilarMovies(mediaId);
-    getTrailerVideoId(mediaId);
+    getVideosData(mediaId);
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: false });
+    }
   }, [mediaId]);
 
   const getMovieDetails = async (id: string) => {
@@ -62,15 +61,10 @@ export default function MovieScreen() {
     }
   };
 
-  const getTrailerVideoId = async (id: string) => {
+  const getVideosData = async (id: string) => {
     const data = await fetchTVorMovieVideosByID("movie", id);
     if (data && data.results) {
-      const trailer = data.results.find(
-        (video: { type: string }) => video.type === "Trailer"
-      );
-      if (trailer) {
-        setTrailerVideoId(trailer.key);
-      }
+      setVideosData(data.results);
     }
   };
 
@@ -113,22 +107,29 @@ export default function MovieScreen() {
 
   return (
     <View className="flex-1">
+      <SafeAreaView className="absolute z-20 w-full flex-row-reverse px-5 py-2">
+        <TouchableOpacity onPress={() => router.back()}>
+          <Feather name="x" size={24} color="white" />
+        </TouchableOpacity>
+      </SafeAreaView>
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={{ paddingBottom: 20 }}
         className="flex-1 bg-zinc-900"
       >
         <View className="w-full">
-          <SafeAreaView className="absolute z-20 w-full flex-row-reverse px-5 py-2">
-            <TouchableOpacity onPress={() => router.back()}>
-              <Feather name="x" size={24} color="white" />
-            </TouchableOpacity>
-          </SafeAreaView>
           {loading ? (
             <Loading />
           ) : (
             <VideoTrailer
-              videoId={trailerVideoId}
+              videoId={
+                videosData.find((video) => video.type === "Trailer")?.key
+              }
               thumbnailUrl={movie?.backdrop_path || movie?.poster_path}
+              playerHeight={210}
+              outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
+              controlsEnabled={false}
+              isOverlay={true}
             />
           )}
         </View>
@@ -198,6 +199,7 @@ export default function MovieScreen() {
           ) : null}
         </View>
         {movie?.id && cast.length > 0 && <Cast cast={cast} />}
+
         {movie?.id && recommendedMovies.length > 0 && (
           <MediaList
             title={"Recommended Movies"}
@@ -212,6 +214,15 @@ export default function MovieScreen() {
             title={"Similar Movies"}
             data={similarMovies}
             hideSeeAll={true}
+            mediaType="movie"
+          />
+        )}
+
+        {movie?.id && videosData.length > 0 && (
+          <VideoSection
+            videosData={videosData}
+            title="Trailers & more"
+            mediaId={mediaId}
             mediaType="movie"
           />
         )}

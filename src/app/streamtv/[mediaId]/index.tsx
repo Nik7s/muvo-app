@@ -6,7 +6,7 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +16,7 @@ import {
   Loading,
   MediaActions,
   MediaList,
+  VideoSection,
   VideoTrailer,
 } from "@/src/components";
 import {
@@ -27,7 +28,7 @@ import {
   fetchTVorMovieVideosByID,
   fetchTvContentRatingByID,
 } from "../../../../api/mediaDB";
-import { MediaData } from "@/assets/types";
+import { MediaData, VideoDataItem } from "@/assets/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ios = Platform.OS == "ios";
@@ -40,10 +41,11 @@ export default function ShowsScreen() {
   const [cast, setCast] = useState([]);
   const [recommendedShows, setRecommendedShows] = useState([]);
   const [similarShows, setSimilarShows] = useState([]);
-  const [trailerVideoId, setTrailerVideoId] = useState<string>("");
+  const [videosData, setVideosData] = useState<VideoDataItem[]>([]);
   const [contentRating, setContentRating] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const isComingSoon = new Date(show?.first_air_date ?? "") > new Date();
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -52,7 +54,10 @@ export default function ShowsScreen() {
     getContentRating(mediaId);
     getRecommendedShows(mediaId);
     getSimilarShows(mediaId);
-    getTrailerVideoId(mediaId);
+    getVideosData(mediaId);
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: false });
+    }
   }, [mediaId]);
 
   const getShowDetails = async (id: string) => {
@@ -70,15 +75,10 @@ export default function ShowsScreen() {
     }
   };
 
-  const getTrailerVideoId = async (id: string) => {
+  const getVideosData = async (id: string) => {
     const data = await fetchTVorMovieVideosByID("tv", id);
     if (data && data.results) {
-      const trailer = data.results.find(
-        (video: { type: string }) => video.type === "Trailer"
-      );
-      if (trailer) {
-        setTrailerVideoId(trailer.key);
-      }
+      setVideosData(data.results);
     }
   };
 
@@ -113,23 +113,30 @@ export default function ShowsScreen() {
 
   return (
     <View className="flex-1">
+      <SafeAreaView className="absolute z-20 w-full flex-row-reverse px-5 py-2">
+        <TouchableOpacity onPress={() => router.back()}>
+          <Feather name="x" size={24} color="white" />
+        </TouchableOpacity>
+      </SafeAreaView>
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={{ paddingBottom: 20 }}
         className="flex-1 bg-zinc-900"
       >
         {/* back button and showposter */}
         <View className="w-full">
-          <SafeAreaView className="absolute z-20 w-full flex-row-reverse px-5 py-2">
-            <TouchableOpacity onPress={() => router.back()}>
-              <Feather name="x" size={24} color="white" />
-            </TouchableOpacity>
-          </SafeAreaView>
           {loading ? (
             <Loading />
           ) : (
             <VideoTrailer
-              videoId={trailerVideoId}
+              videoId={
+                videosData.find((video) => video.type === "Trailer")?.key
+              }
               thumbnailUrl={show?.backdrop_path || show?.poster_path}
+              playerHeight={210}
+              outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
+              controlsEnabled={false}
+              isOverlay={true}
             />
           )}
         </View>
@@ -152,7 +159,9 @@ export default function ShowsScreen() {
               <View className="w-full my-4">
                 {!isComingSoon ? (
                   <Button
-                    onClick={() => router.push(`/streamtv/${mediaId}/watch`)}
+                    onClick={() =>
+                      router.push(`/streamtv/${mediaId}/1/1/watch`)
+                    }
                     label="Watch Now"
                     icon={
                       <Ionicons name="play-sharp" size={20} color="black" />
@@ -209,6 +218,15 @@ export default function ShowsScreen() {
             title={"Similar Tv Shows"}
             data={similarShows}
             hideSeeAll={true}
+            mediaType="tv"
+          />
+        )}
+
+        {show?.id && videosData.length > 0 && (
+          <VideoSection
+            videosData={videosData}
+            title="Trailers & more"
+            mediaId={mediaId}
             mediaType="tv"
           />
         )}

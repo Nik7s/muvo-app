@@ -6,15 +6,23 @@ import { baseUrl } from "@/api/mediaDB";
 
 interface VideoTrailerProps {
   videoId?: string;
-  thumbnailUrl: string | undefined;
+  thumbnailUrl?: string | undefined;
+  outerViewClasses?: string;
+  playerHeight: number;
+  controlsEnabled: boolean;
+  isOverlay: boolean;
 }
 
 const VideoTrailer: React.FC<VideoTrailerProps> = ({
   videoId,
   thumbnailUrl,
+  outerViewClasses,
+  playerHeight,
+  controlsEnabled,
+  isOverlay,
 }) => {
   const playerRef = useRef<YoutubeIframeRef>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isVideoPlayable, setIsVideoPlayable] = useState(true);
   const [isMute, setIsMute] = useState(true);
 
@@ -24,17 +32,17 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
   }, []);
 
   return (
-    <View className="mt-8 mx-2.5 overflow-hidden rounded-xl">
+    <View className={outerViewClasses}>
       {videoId && isVideoPlayable ? (
         <>
           <YoutubePlayer
             ref={playerRef}
-            height={210}
+            height={playerHeight}
             play={isPlaying}
             mute={isMute}
             videoId={videoId}
             initialPlayerParams={{
-              controls: false,
+              controls: controlsEnabled,
               iv_load_policy: 3,
               showClosedCaptions: false,
               loop: true,
@@ -47,16 +55,18 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
               }
             }}
           />
-          <TouchableOpacity
-            className="absolute bottom-2 right-1 rounded-full p-2 z-20"
-            onPress={() => setIsMute(!isMute)}
-          >
-            {isMute ? (
-              <Feather name="volume-x" size={24} color="white" />
-            ) : (
-              <Feather name="volume-2" size={24} color="white" />
-            )}
-          </TouchableOpacity>
+          {isOverlay && (
+            <TouchableOpacity
+              className="absolute bottom-2 right-1 rounded-full p-2 z-20"
+              onPress={() => setIsMute(!isMute)}
+            >
+              {isMute ? (
+                <Feather name="volume-x" size={24} color="white" />
+              ) : (
+                <Feather name="volume-2" size={24} color="white" />
+              )}
+            </TouchableOpacity>
+          )}
         </>
       ) : (
         <Image
@@ -64,7 +74,9 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
           style={{ width: "100%", height: 210 }}
         />
       )}
-      <View className="absolute top-0 left-0 w-full h-full bg-transparent" />
+      {isOverlay && (
+        <View className="absolute top-0 left-0 w-full h-full bg-transparent" />
+      )}
     </View>
   );
 };

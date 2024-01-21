@@ -67,7 +67,6 @@ export default function HomeScreen() {
 
   return (
     <View className="flex-1 bg-zinc-900">
-      {/* search bar */}
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
         <StatusBar />
         <View className="flex-row justify-between items-center mx-4 my-2">

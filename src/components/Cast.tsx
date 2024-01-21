@@ -51,17 +51,18 @@ const CastItem = ({ person }: { person: any }) => (
 );
 
 export default function Cast({ cast }: CastProps) {
-  const top10Cast = cast.slice(0, 10);
   return (
     <View className="my-6">
-      <Text className="text-white text-lg mx-4 mb-5">Top Cast</Text>
+      <Text className="font-semibold text-white text-xl mx-4 mb-5">
+        Top Cast
+      </Text>
       <FlatList
         horizontal
         initialNumToRender={4}
         removeClippedSubviews
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
-        data={top10Cast}
+        data={cast.slice(0, 10)}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => <CastItem key={index} person={item} />}
       />

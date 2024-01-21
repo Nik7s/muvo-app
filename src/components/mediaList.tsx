@@ -61,7 +61,7 @@ export default function MediaList({
   return (
     <View className="mb-8 space-y-4">
       <View className="mx-4 flex-row justify-between items-center">
-        <Text className="text-white text-lg">{title}</Text>
+        <Text className="font-semibold text-xl text-white">{title}</Text>
         {!hideSeeAll && (
           <TouchableOpacity>
             <Text style={styles.text} className="text-lg">
