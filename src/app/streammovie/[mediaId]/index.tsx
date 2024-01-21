@@ -13,6 +13,7 @@ import {
   Button,
   Cast,
   Loading,
+  MediaActions,
   MediaList,
   VideoTrailer,
 } from "@/src/components";
@@ -22,7 +23,7 @@ import {
   fetchRecommendedTVorMovies,
   fetchSimilarTVorMovies,
   fetchTVorMovieVideosByID,
-  fetchTVorMovieContentRatingByID,
+  fetchMovieContentRatingByID,
 } from "../../../../api/mediaDB";
 import { MediaData } from "@/assets/types";
 
@@ -33,6 +34,7 @@ export default function MovieScreen() {
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [trailerVideoId, setTrailerVideoId] = useState<string>("");
+  const [contentRating, setContentRating] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const isComingSoon = new Date(movie?.release_date ?? "") > new Date();
 
@@ -40,6 +42,7 @@ export default function MovieScreen() {
     setLoading(true);
     getMovieDetails(mediaId);
     getMovieCredits(mediaId);
+    getContentRating(mediaId);
     getRecommendedMovies(mediaId);
     getSimilarMovies(mediaId);
     getTrailerVideoId(mediaId);
@@ -85,6 +88,29 @@ export default function MovieScreen() {
     }
   };
 
+  const getContentRating = async (id: string) => {
+    const data = await fetchMovieContentRatingByID(id);
+    if (data && data.results) {
+      const certification =
+        data.results.find(
+          (date: {
+            iso_3166_1: string;
+            release_dates: { certification: string }[];
+          }) =>
+            ["IN", "US"].some(
+              (country) =>
+                date.iso_3166_1 === country &&
+                date.release_dates[0]?.certification !== ""
+            )
+        ) ||
+        data.results.find(
+          (date: { release_dates: { certification: string }[] }) =>
+            date.release_dates[0]?.certification !== ""
+        );
+      setContentRating(certification.release_dates[0]?.certification);
+    }
+  };
+
   return (
     <View className="flex-1">
       <ScrollView
@@ -124,7 +150,7 @@ export default function MovieScreen() {
                 {`${Math.floor(Number(movie?.runtime) / 60)}h ${
                   Number(movie?.runtime) % 60
                 }min`}{" "}
-                • <Text className="text-sm">UA 13+</Text>
+                • {contentRating}
               </Text>
               <View className="w-full my-4">
                 {!isComingSoon ? (
@@ -165,6 +191,9 @@ export default function MovieScreen() {
               <Text className="text-neutral-400 mx-4 tracking-wide text-center">
                 {movie?.overview}
               </Text>
+              <MediaActions
+                shareLink={`https://muvotv.vercel.app/movies/${mediaId}`}
+              />
             </View>
           ) : null}
         </View>

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
-import React, { memo } from "react";
+import React from "react";
 import { fallbackPersonImage, image185 } from "@/api/mediaDB";
 import MarqueeView from "react-native-marquee-view";
 import * as WebBrowser from "expo-web-browser";
@@ -12,7 +12,7 @@ interface CastProps {
   }[];
 }
 
-const CastItem = memo(({ person }: { person: any }) => (
+const CastItem = ({ person }: { person: any }) => (
   <TouchableOpacity
     className="mr-4 items-center"
     onPress={() =>
@@ -48,7 +48,7 @@ const CastItem = memo(({ person }: { person: any }) => (
       </Text>
     )}
   </TouchableOpacity>
-));
+);
 
 export default function Cast({ cast }: CastProps) {
   const top10Cast = cast.slice(0, 9);

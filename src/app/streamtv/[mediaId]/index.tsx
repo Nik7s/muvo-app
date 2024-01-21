@@ -1,37 +1,33 @@
 import {
   View,
   Text,
-  Image,
   Dimensions,
   TouchableOpacity,
   ScrollView,
   Platform,
-  StatusBar,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
   Cast,
   Loading,
+  MediaActions,
   MediaList,
   VideoTrailer,
 } from "@/src/components";
 import {
-  fallbackMoviePoster,
   fetchTVorMovieCreditsByID,
   fetchTVorMovieDetailsByID,
   fetchRecommendedTVorMovies,
   fetchSimilarTVorMovies,
   image500,
   fetchTVorMovieVideosByID,
+  fetchTvContentRatingByID,
 } from "../../../../api/mediaDB";
-import { styles, theme } from "../../../theme/index";
 import { MediaData } from "@/assets/types";
-import MarqueeView from "react-native-marquee-view";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ios = Platform.OS == "ios";
@@ -45,6 +41,7 @@ export default function ShowsScreen() {
   const [recommendedShows, setRecommendedShows] = useState([]);
   const [similarShows, setSimilarShows] = useState([]);
   const [trailerVideoId, setTrailerVideoId] = useState<string>("");
+  const [contentRating, setContentRating] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const isComingSoon = new Date(show?.first_air_date ?? "") > new Date();
 
@@ -52,6 +49,7 @@ export default function ShowsScreen() {
     setLoading(true);
     getShowDetails(mediaId);
     getShowCredits(mediaId);
+    getContentRating(mediaId);
     getRecommendedShows(mediaId);
     getSimilarShows(mediaId);
     getTrailerVideoId(mediaId);
@@ -98,6 +96,21 @@ export default function ShowsScreen() {
     }
   };
 
+  const getContentRating = async (id: string) => {
+    const data = await fetchTvContentRatingByID(id);
+    if (data && data.results) {
+      const rating =
+        data.results.find((date: { iso_3166_1: string; rating: string }) =>
+          ["IN", "US"].some(
+            (country) => date.iso_3166_1 === country && date.rating !== ""
+          )
+        ) ||
+        data.results.find((date: { rating: string }) => date.rating !== "");
+
+      setContentRating(rating?.rating);
+    }
+  };
+
   return (
     <View className="flex-1">
       <ScrollView
@@ -134,8 +147,7 @@ export default function ShowsScreen() {
             <View>
               <Text className="text-neutral-400 font-semibold text-base text-center">
                 {show?.first_air_date?.split("-")[0] || "N/A"} •{" "}
-                {`${show?.number_of_seasons} Seasons`} •{" "}
-                <Text className="text-sm">UA 13+</Text>
+                {`${show?.number_of_seasons} Seasons`} • {contentRating}
               </Text>
               <View className="w-full my-4">
                 {!isComingSoon ? (
@@ -176,6 +188,9 @@ export default function ShowsScreen() {
               <Text className="text-neutral-400 mx-4 tracking-wide text-center">
                 {show?.overview}
               </Text>
+              <MediaActions
+                shareLink={`https://muvotv.vercel.app/shows/${mediaId}`}
+              />
             </View>
           ) : null}
         </View>

@@ -33,7 +33,7 @@ export default function MovieScreen() {
 
   const getTrendingMedias = async () => {
     const data = await fetchTrendingMedias("movie");
-    if (data && data.results) setTrending(data.results);
+    if (data && data.results) setTrending(data.results.slice(0, 10));
     setLoading(false);
   };
   const getPopularMovies = async () => {

@@ -33,7 +33,7 @@ export default function TvShowScreen() {
 
   const getTrendingMedias = async () => {
     const data = await fetchTrendingMedias("tv");
-    if (data && data.results) setTrending(data.results);
+    if (data && data.results) setTrending(data.results.slice(0, 10));
     setLoading(false);
   };
   const getPopularShows = async () => {

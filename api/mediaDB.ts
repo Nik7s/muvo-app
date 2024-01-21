@@ -18,8 +18,10 @@ const searchMediaEndpoint = (type: string, query: string) =>
 
 const mediaDetailsEndpoint = (type: string, id: string) =>
   `${BASE_URL}/${type}/${id}?api_key=${API_KEY}&language=en-US`;
-const mediaContentRatingEndpoint = (type: string, id: string) =>
-  `${BASE_URL}/${type}/${id}/content_ratings?api_key=${API_KEY}&language=en-US`;
+const movieContentRatingEndpoint = (id: string) =>
+  `${BASE_URL}/movie/${id}/release_dates?api_key=${API_KEY}&language=en-US`;
+const tvContentRatingEndpoint = (id: string) =>
+  `${BASE_URL}/tv/${id}/content_ratings?api_key=${API_KEY}&language=en-US`;
 const mediaVideosEndpoint = (type: string, id: string) =>
   `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=en-US`;
 const mediaCreditsEndpoint = (type: string, id: string) =>
@@ -70,8 +72,11 @@ export const fetchTopRatedMedias = (type: string) => {
 export const fetchTVorMovieDetailsByID = (type: string, id: string) => {
   return apiCall(mediaDetailsEndpoint(type, id));
 };
-export const fetchTVorMovieContentRatingByID = (type: string, id: string) => {
-  return apiCall(mediaContentRatingEndpoint(type, id));
+export const fetchMovieContentRatingByID = (id: string) => {
+  return apiCall(movieContentRatingEndpoint(id));
+};
+export const fetchTvContentRatingByID = (id: string) => {
+  return apiCall(tvContentRatingEndpoint(id));
 };
 export const fetchTVorMovieVideosByID = (type: string, id: string) => {
   return apiCall(mediaVideosEndpoint(type, id));

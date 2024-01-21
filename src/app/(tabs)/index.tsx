@@ -16,16 +16,17 @@ import {
   fetchTopRatedMedias,
 } from "../../../api/mediaDB";
 import { Feather, Octicons } from "@expo/vector-icons";
+import { MediaData } from "@/assets/types";
 
 const ios = Platform.OS === "ios";
 
 export default function HomeScreen() {
-  const [trending, setTrending] = useState([]);
+  const [trending, setTrending] = useState<MediaData[]>([]);
   const [popularMovies, setPopularMovies] = useState([]);
   const [popularShows, setPopularShows] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [topRatedShows, setTopRatedShows] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getTrendingMedias();
@@ -36,8 +37,21 @@ export default function HomeScreen() {
   }, []);
 
   const getTrendingMedias = async () => {
-    const data = await fetchTrendingMedias("movie");
-    if (data && data.results) setTrending(data.results);
+    const [tvData, movieData] = await Promise.all([
+      fetchTrendingMedias("movie"),
+      fetchTrendingMedias("tv"),
+    ]);
+    const trendingAll = [
+      ...(tvData?.results).slice(0, 5).map((result: any) => ({
+        ...result,
+        mediaType: "tv",
+      })),
+      ...(movieData?.results).slice(0, 5).map((result: any) => ({
+        ...result,
+        mediaType: "movie",
+      })),
+    ];
+    setTrending(trendingAll);
     setLoading(false);
   };
   const getPopularMovies = async () => {
@@ -84,7 +98,10 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingBottom: 30 }}
         >
           {trending.length > 0 && (
-            <TrendingMedias data={trending} mediaType="movie" />
+            <TrendingMedias
+              data={trending}
+              mediaType={trending[0]?.mediaType || ""}
+            />
           )}
 
           {popularMovies.length > 0 && (

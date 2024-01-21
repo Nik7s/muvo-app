@@ -15,6 +15,7 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
 }) => {
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isVideoPlayable, setIsVideoPlayable] = useState(true);
   const [isMute, setIsMute] = useState(true);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
 
   return (
     <View className="mt-8 mx-2.5 overflow-hidden rounded-xl">
-      {videoId ? (
+      {videoId && isVideoPlayable ? (
         <>
           <YoutubePlayer
             ref={playerRef}
@@ -39,6 +40,7 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
               loop: true,
               rel: false,
             }}
+            onError={() => setIsVideoPlayable(false)}
             onChangeState={(state) => {
               if (state === "ended") {
                 playerRef.current?.seekTo(0, true);
