@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@react-native-picker/picker": "2.6.1",
     "@react-navigation/native": "^6.0.2",
     "axios": "^1.6.5",
     "deprecated-react-native-prop-types": "^5.0.0",

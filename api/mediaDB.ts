@@ -30,6 +30,8 @@ const recommendedMediaEndpoint = (type: string, id: string) =>
   `${BASE_URL}/${type}/${id}/recommendations?api_key=${API_KEY}&language=en-US`;
 const similarMediaEndpoint = (type: string, id: string) =>
   `${BASE_URL}/${type}/${id}/similar?api_key=${API_KEY}&language=en-US`;
+const TVEpisodeDetailsByIDandSeason = (id: string, season: string) =>
+  `${BASE_URL}/tv/${id}/season/${season}?api_key=${API_KEY}&language=en-US`;
 
 export const image500 = (posterPath: string) =>
   posterPath ? "https://image.tmdb.org/t/p/w500" + posterPath : null;
@@ -93,4 +95,8 @@ export const fetchSimilarTVorMovies = (type: string, id: string) => {
 
 export const fetchTVorMovieSearchResults = (type: string, query: string) => {
   return apiCall(searchMediaEndpoint(type, query));
+};
+
+export const fetchTvEpisodeDetails = (id: string, season: string) => {
+  return apiCall(TVEpisodeDetailsByIDandSeason(id, season));
 };

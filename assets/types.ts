@@ -66,3 +66,14 @@ export type VideoDataItem = {
   size: number;
   type: string;
 };
+
+export interface Episode {
+  id: number;
+  episode_number: number;
+  name: string;
+  runtime: number;
+  still_path: string;
+  overview: string;
+  season_number: number;
+  air_date: Date;
+}

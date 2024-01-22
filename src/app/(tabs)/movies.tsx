@@ -51,10 +51,9 @@ export default function MovieScreen() {
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
         <StatusBar />
         <View className="flex-row justify-between items-center mx-4 my-2">
-          <Octicons name="three-bars" size={30} color="white" />
-          <View className="flex-1 items-center justify-center">
+          <View>
             <Image
-              className="flex-1 w-36"
+              className="flex-1 w-32"
               source={require("../../../assets/images/logo.png")}
             />
           </View>

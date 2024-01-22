@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
   Cast,
+  EpisodeSection,
   Loading,
   MediaActions,
   MediaList,
@@ -24,26 +25,25 @@ import {
   fetchTVorMovieDetailsByID,
   fetchRecommendedTVorMovies,
   fetchSimilarTVorMovies,
-  image500,
   fetchTVorMovieVideosByID,
   fetchTvContentRatingByID,
   baseUrl,
+  fetchTvEpisodeDetails,
 } from "../../../../api/mediaDB";
 import { MediaData, VideoDataItem } from "@/assets/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-const ios = Platform.OS == "ios";
-const Ymargin = ios ? "" : " mt-1";
-var { width, height } = Dimensions.get("window");
+import { Picker } from "@react-native-picker/picker";
 
 export default function ShowsScreen() {
   const { mediaId } = useLocalSearchParams<{ mediaId: string }>();
-  const [show, setShow] = useState<MediaData | null>(null);
+  const [show, setShow] = useState<MediaData>();
   const [cast, setCast] = useState([]);
   const [recommendedShows, setRecommendedShows] = useState([]);
   const [similarShows, setSimilarShows] = useState([]);
   const [videosData, setVideosData] = useState<VideoDataItem[]>([]);
   const [contentRating, setContentRating] = useState<string>("");
+  const [selectedSeason, setSelectedSeason] = useState(1);
+  const [episodesData, setEpisodesData] = useState();
   const [loading, setLoading] = useState(false);
   const isComingSoon = new Date(show?.first_air_date ?? "") > new Date();
   const scrollViewRef = useRef<ScrollView | null>(null);
@@ -60,6 +60,10 @@ export default function ShowsScreen() {
       scrollViewRef.current.scrollTo({ y: 0, animated: false });
     }
   }, [mediaId]);
+
+  useEffect(() => {
+    getEpisodesDetail(mediaId, selectedSeason.toString());
+  }, [mediaId, selectedSeason]);
 
   const getShowDetails = async (id: string) => {
     const data = await fetchTVorMovieDetailsByID("tv", id);
@@ -112,11 +116,18 @@ export default function ShowsScreen() {
     }
   };
 
+  const getEpisodesDetail = async (id: string, season_number: string) => {
+    const data = await fetchTvEpisodeDetails(id, season_number);
+    if (data) {
+      setEpisodesData(data);
+    }
+  };
+
   return (
     <View className="flex-1">
-      <SafeAreaView className="absolute z-20 w-full flex-row-reverse px-5 py-2">
+      <SafeAreaView className="absolute z-20 w-full flex-row px-5 py-2">
         <TouchableOpacity onPress={() => router.back()}>
-          <Feather name="x" size={24} color="white" />
+          <MaterialIcons name="keyboard-backspace" size={26} color="white" />
         </TouchableOpacity>
       </SafeAreaView>
       <ScrollView
@@ -165,7 +176,7 @@ export default function ShowsScreen() {
                     onClick={() =>
                       router.push(`/streamtv/${mediaId}/1/1/watch`)
                     }
-                    label="Watch Now"
+                    label="Watch First Episode"
                     icon={
                       <Ionicons name="play-sharp" size={20} color="black" />
                     }
@@ -203,6 +214,23 @@ export default function ShowsScreen() {
               <MediaActions
                 shareLink={`https://muvotv.vercel.app/shows/${mediaId}`}
               />
+              <Picker
+                selectedValue={selectedSeason}
+                onValueChange={(itemValue) => setSelectedSeason(itemValue)}
+                style={{ color: "white", width: 150 }}
+                dropdownIconColor={"#84cc16"}
+              >
+                {show?.seasons
+                  ?.filter((season: any) => season.name !== "Specials")
+                  .map((season: any, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={season.name}
+                      value={season.season_number}
+                    />
+                  ))}
+              </Picker>
+              <EpisodeSection episodesData={episodesData} mediaId={mediaId} />
             </View>
           ) : null}
         </View>

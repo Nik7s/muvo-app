@@ -42,7 +42,7 @@ export default function watch() {
       <SafeAreaView className="flex-row items-center ml-7 z-20">
         <StatusBar hidden />
         <TouchableOpacity onPress={() => router.back()}>
-          <MaterialIcons name="keyboard-backspace" size={26} color="#aaaaaa" />
+          <MaterialIcons name="keyboard-backspace" size={26} color="#eaeaea" />
         </TouchableOpacity>
         <Text className="text-neutral-300 ml-3">{movie?.title}</Text>
       </SafeAreaView>
