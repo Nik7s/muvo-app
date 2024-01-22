@@ -24,6 +24,7 @@
     "expo-linking": "~6.2.2",
     "expo-reanimated-av-player": "^0.2.0",
     "expo-router": "~3.4.3",
+    "expo-screen-orientation": "~6.4.1",
     "expo-sharing": "^11.10.0",
     "expo-splash-screen": "~0.26.3",
     "expo-status-bar": "~1.11.1",

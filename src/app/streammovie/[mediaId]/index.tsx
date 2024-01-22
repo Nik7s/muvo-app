@@ -1,7 +1,12 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
@@ -19,6 +24,7 @@ import {
   fetchSimilarTVorMovies,
   fetchTVorMovieVideosByID,
   fetchMovieContentRatingByID,
+  baseUrl,
 } from "../../../../api/mediaDB";
 import { MediaData, VideoDataItem } from "@/assets/types";
 
@@ -107,9 +113,9 @@ export default function MovieScreen() {
 
   return (
     <View className="flex-1">
-      <SafeAreaView className="absolute z-20 w-full flex-row-reverse px-5 py-2">
+      <SafeAreaView className="absolute z-20 w-full flex-row px-5 py-2">
         <TouchableOpacity onPress={() => router.back()}>
-          <Feather name="x" size={24} color="white" />
+          <MaterialIcons name="keyboard-backspace" size={26} color="white" />
         </TouchableOpacity>
       </SafeAreaView>
       <ScrollView
@@ -125,7 +131,9 @@ export default function MovieScreen() {
               videoId={
                 videosData.find((video) => video.type === "Trailer")?.key
               }
-              thumbnailUrl={movie?.backdrop_path || movie?.poster_path}
+              thumbnailUrl={`${baseUrl}${
+                movie?.backdrop_path || movie?.poster_path
+              }`}
               playerHeight={210}
               outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
               controlsEnabled={false}

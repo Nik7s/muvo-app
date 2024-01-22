@@ -64,6 +64,7 @@ export default function index() {
         <View className="mt-7">
           <VideoTrailer
             videoId={videoKey}
+            thumbnailUrl={`https://img.youtube.com/vi/${videoKey}/mqdefault.jpg`}
             playerHeight={230}
             controlsEnabled={true}
             isOverlay={false}

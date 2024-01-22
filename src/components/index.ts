@@ -7,6 +7,7 @@ import Button from "./Button";
 import VideoTrailer from "./VideoTrailer";
 import MediaActions from "./MediaActions";
 import VideoSection from "./VideoSection";
+import EmbeddedVideo from "./EmbeddedVideo";
 
 export {
   TrendingMedias,
@@ -18,4 +19,5 @@ export {
   VideoTrailer,
   MediaActions,
   VideoSection,
+  EmbeddedVideo,
 };

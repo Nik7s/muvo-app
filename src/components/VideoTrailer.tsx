@@ -6,7 +6,7 @@ import { baseUrl } from "@/api/mediaDB";
 
 interface VideoTrailerProps {
   videoId?: string;
-  thumbnailUrl?: string | undefined;
+  thumbnailUrl: string | undefined;
   outerViewClasses?: string;
   playerHeight: number;
   controlsEnabled: boolean;
@@ -28,7 +28,7 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
 
   useEffect(() => {
     setIsPlaying(true);
-    setIsMute(false);
+    setIsMute(true);
   }, []);
 
   return (
@@ -70,7 +70,7 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
         </>
       ) : (
         <Image
-          source={{ uri: `${baseUrl}${thumbnailUrl}` }}
+          source={{ uri: `${thumbnailUrl}` }}
           style={{ width: "100%", height: 210 }}
         />
       )}

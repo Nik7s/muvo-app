@@ -27,6 +27,7 @@ import {
   image500,
   fetchTVorMovieVideosByID,
   fetchTvContentRatingByID,
+  baseUrl,
 } from "../../../../api/mediaDB";
 import { MediaData, VideoDataItem } from "@/assets/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -132,7 +133,9 @@ export default function ShowsScreen() {
               videoId={
                 videosData.find((video) => video.type === "Trailer")?.key
               }
-              thumbnailUrl={show?.backdrop_path || show?.poster_path}
+              thumbnailUrl={`${baseUrl}${
+                show?.backdrop_path || show?.poster_path
+              }`}
               playerHeight={210}
               outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
               controlsEnabled={false}
