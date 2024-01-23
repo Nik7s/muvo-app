@@ -1,5 +1,5 @@
-import TrendingMedias from "./trendingMedias";
-import MediaList from "./mediaList";
+import TrendingMedias from "./TrendingMedias";
+import MediaList from "./MediaList";
 import MediaGrid from "./MediaGrid";
 import Cast from "./Cast";
 import Loading from "./Loading";

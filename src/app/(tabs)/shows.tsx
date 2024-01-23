@@ -4,11 +4,10 @@ import {
   Image,
   Platform,
   ScrollView,
-  StatusBar,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Feather, Octicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TrendingMedias, MediaList, Loading } from "@/src/components";
 import {
@@ -16,6 +15,7 @@ import {
   fetchTopRatedMedias,
   fetchTrendingMedias,
 } from "@/api/mediaDB";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ios = Platform.OS === "ios";
 
@@ -46,10 +46,8 @@ export default function TvShowScreen() {
   };
 
   return (
-    <View className="flex-1 bg-zinc-900">
-      {/* search bar */}
+    <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
-        <StatusBar />
         <View className="flex-row justify-between items-center mx-4 my-2">
           <View>
             <Image
@@ -90,6 +88,6 @@ export default function TvShowScreen() {
           )}
         </ScrollView>
       )}
-    </View>
+    </LinearGradient>
   );
 }

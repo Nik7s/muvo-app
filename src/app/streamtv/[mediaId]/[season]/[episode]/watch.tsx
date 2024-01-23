@@ -48,7 +48,7 @@ export default function watch() {
         <TouchableOpacity onPress={() => router.back()}>
           <MaterialIcons name="keyboard-backspace" size={26} color="#eaeaea" />
         </TouchableOpacity>
-        <View className="flex-col ml-3">
+        <View className="flex-row items-center space-x-2 ml-3">
           <Text className="text-neutral-300">{show?.name}</Text>
           <Text className="text-neutral-400">
             {`S${season}`}

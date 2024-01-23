@@ -3,7 +3,12 @@ import { View, useColorScheme } from "react-native";
 import Colors from "../../constants/Colors";
 import { BottomTabBar } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -64,12 +69,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="favorites"
+        name="profile"
         options={{
-          title: "Favorites",
+          title: "Profile",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <AntDesign name="heart" size={24} color={color} />
+            <Ionicons name="person-outline" size={24} color={color} />
           ),
         }}
       />

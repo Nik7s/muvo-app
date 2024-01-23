@@ -1,33 +1,23 @@
 import {
   View,
   Text,
-  FlatList,
   TouchableWithoutFeedback,
   Image,
   Dimensions,
-  TouchableOpacity,
   ScrollView,
 } from "react-native";
 import React from "react";
-import { styles } from "../theme";
 import { router } from "expo-router";
 import { fallbackMoviePoster, image185 } from "@/api/mediaDB";
 const { width, height } = Dimensions.get("window");
-import MarqueeView from "react-native-marquee-view";
 import { MediaData } from "@/assets/types";
-interface mediaListProps {
+interface MediaGridProps {
   title: string;
   data: any[];
   mediaType: string;
-  hideSeeAll: boolean;
 }
 
-export default function MediaGrid({
-  title,
-  data,
-  mediaType,
-  hideSeeAll,
-}: mediaListProps) {
+export default function MediaGrid({ title, data, mediaType }: MediaGridProps) {
   const handlePress = (item: MediaData) => {
     const route =
       mediaType === "tv" ? `/streamtv/${item.id}` : `/streammovie/${item.id}`;

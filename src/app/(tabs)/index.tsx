@@ -4,7 +4,6 @@ import {
   Image,
   Platform,
   ScrollView,
-  StatusBar,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,8 +14,9 @@ import {
   fetchPopularMedias,
   fetchTopRatedMedias,
 } from "../../../api/mediaDB";
-import { Feather, Octicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { MediaData } from "@/assets/types";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ios = Platform.OS === "ios";
 
@@ -66,9 +66,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className="flex-1 bg-zinc-900">
+    <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
-        <StatusBar />
         <View className="flex-row justify-between items-center mx-4 my-2">
           <View>
             <Image
@@ -125,6 +124,6 @@ export default function HomeScreen() {
           )}
         </ScrollView>
       )}
-    </View>
+    </LinearGradient>
   );
 }

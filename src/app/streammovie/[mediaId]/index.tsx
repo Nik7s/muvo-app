@@ -26,6 +26,7 @@ import {
   baseUrl,
 } from "../../../../api/mediaDB";
 import { MediaData, VideoDataItem } from "@/assets/types";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function MovieScreen() {
   const { mediaId } = useLocalSearchParams<{ mediaId: string }>();
@@ -111,7 +112,7 @@ export default function MovieScreen() {
   };
 
   return (
-    <View className="flex-1">
+    <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <SafeAreaView className="absolute z-20 w-full flex-row px-5 py-2">
         <TouchableOpacity onPress={() => router.back()}>
           <MaterialIcons name="keyboard-backspace" size={26} color="white" />
@@ -120,7 +121,7 @@ export default function MovieScreen() {
       <ScrollView
         ref={scrollViewRef}
         contentContainerStyle={{ paddingBottom: 20 }}
-        className="flex-1 bg-zinc-900"
+        className="flex-1"
       >
         <View className="w-full">
           {loading ? (
@@ -234,6 +235,6 @@ export default function MovieScreen() {
           />
         )}
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 }
