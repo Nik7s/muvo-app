@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import React from "react";
 import { WebView } from "react-native-webview";
-
+import * as WebBrowser from "expo-web-browser";
 interface EmbeddedVideoProps {
   embedURL: string;
 }
@@ -14,7 +14,8 @@ export default function EmbeddedVideo({ embedURL }: EmbeddedVideoProps) {
         }}
         className="bg-black aspect-[18/9]"
         onShouldStartLoadWithRequest={(request) => {
-          return request.url.startsWith(embedURL);
+          WebBrowser.openBrowserAsync(request.url);
+          return false;
         }}
         setSupportMultipleWindows={false}
       />

@@ -50,7 +50,7 @@ export default function watch() {
         </TouchableOpacity>
         <View className="flex-row items-center space-x-2 ml-3">
           <Text className="text-neutral-300">{show?.name}</Text>
-          <Text className="text-neutral-400">
+          <Text className="text-neutral-300">
             {`S${season}`}
             {`E${episode}`}
           </Text>
