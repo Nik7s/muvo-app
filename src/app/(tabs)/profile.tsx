@@ -47,7 +47,10 @@ export default function ProfileScreen() {
           </Text>
         </View>
         <View className="w-[70vw] pt-4">
-          <TouchableOpacity className="bg-white rounded-xl py-3 items-center">
+          <TouchableOpacity
+            className="bg-white rounded-xl py-3 items-center"
+            onPress={() => router.navigate("/login")}
+          >
             <Text className="text-black text-lg">Log In</Text>
           </TouchableOpacity>
         </View>
