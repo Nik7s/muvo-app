@@ -7,11 +7,16 @@ import {
   Dimensions,
   SafeAreaView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import axios from "axios";
+import { FIREBASE_AUTH } from "@/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 var { width, height } = Dimensions.get("window");
 
@@ -19,7 +24,30 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const auth = FIREBASE_AUTH;
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, () => {
+      router.replace("/(tabs)/home");
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  const register = async () => {
+    setLoading(true);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert("Check you emails!");
+    } catch (error: any) {
+      console.log(error);
+      alert("Registration failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <LinearGradient
@@ -79,11 +107,18 @@ export default function RegisterScreen() {
             />
           </View>
           <View className="w-full">
-            <TouchableOpacity className="w-full bg-green-400 p-3 rounded-2xl mb-5">
-              <Text className="text-xl font-bold text-white text-center">
-                Sign Up
-              </Text>
-            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator size="large" color="rgb(34 197 94)" />
+            ) : (
+              <TouchableOpacity
+                onPress={register}
+                className="w-full bg-green-400 p-3 rounded-2xl mb-5"
+              >
+                <Text className="text-xl font-bold text-white text-center">
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
           <View className="flex-row justify-center">
             <Text className="text-neutral-300">Already have an account? </Text>

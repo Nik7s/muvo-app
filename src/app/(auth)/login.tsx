@@ -5,35 +5,44 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { FIREBASE_AUTH } from "@/firebaseConfig";
 
 var { width, height } = Dimensions.get("window");
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const auth = FIREBASE_AUTH;
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const token = await AsyncStorage.getItem("authToken");
-        if (token) {
-          router.replace("/(tabs)/home");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    const unsubscribe = onAuthStateChanged(auth, () => {
+      router.replace("/(tabs)/home");
+    });
 
-    checkLoginStatus();
-  }, []);
+    return () => unsubscribe();
+  }, [auth]);
+
+  const signIn = async () => {
+    setLoading(true);
+    try {
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      console.log(res);
+    } catch (error: any) {
+      console.log(error);
+      alert("Sign In failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <LinearGradient
@@ -84,11 +93,18 @@ export default function LoginScreen() {
             />
           </View>
           <View className="w-full">
-            <TouchableOpacity className="w-full bg-green-400 p-3 rounded-2xl mb-5">
-              <Text className="text-xl font-bold text-white text-center">
-                Login
-              </Text>
-            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator size="large" color="rgb(34 197 94)" />
+            ) : (
+              <TouchableOpacity
+                onPress={signIn}
+                className="w-full bg-green-400 p-3 rounded-2xl mb-5"
+              >
+                <Text className="text-xl font-bold text-white text-center">
+                  Login
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
           <View className="flex-row justify-center">
             <Text className="text-neutral-300">First time using Muvo? </Text>
