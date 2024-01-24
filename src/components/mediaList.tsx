@@ -10,7 +10,7 @@ import {
 import React from "react";
 import { styles } from "../theme";
 import { router } from "expo-router";
-import { fallbackMoviePoster, image185 } from "@/api/mediaDB";
+import { fallbackMoviePoster, image185 } from "@/api/media";
 const { width, height } = Dimensions.get("window");
 import MarqueeView from "react-native-marquee-view";
 import { MediaData } from "@/assets/types";

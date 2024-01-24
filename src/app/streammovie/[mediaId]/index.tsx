@@ -24,7 +24,7 @@ import {
   fetchTVorMovieVideosByID,
   fetchMovieContentRatingByID,
   baseUrl,
-} from "../../../../api/mediaDB";
+} from "@/api/media";
 import { MediaData, VideoDataItem } from "@/assets/types";
 import { LinearGradient } from "expo-linear-gradient";
 

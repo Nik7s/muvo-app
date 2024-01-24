@@ -10,7 +10,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { MaterialIcons } from "@expo/vector-icons";
 import { EmbeddedVideo } from "@/src/components";
-import { embedTvShowUrl, fetchTVorMovieDetailsByID } from "@/api/mediaDB";
+import { embedTvShowUrl, fetchTVorMovieDetailsByID } from "@/api/media";
 import { MediaData } from "@/assets/types";
 
 export default function watch() {
@@ -42,8 +42,8 @@ export default function watch() {
   };
 
   return (
-    <View className="flex-1 bg-zinc-900">
-      <SafeAreaView className="flex-row items-center ml-7 z-20">
+    <View className="flex-1 bg-black">
+      <SafeAreaView className="flex-row items-center ml-4 mt-3 z-20">
         <StatusBar hidden />
         <TouchableOpacity onPress={() => router.back()}>
           <MaterialIcons name="keyboard-backspace" size={26} color="#eaeaea" />
@@ -58,7 +58,7 @@ export default function watch() {
       </SafeAreaView>
       <View className="absolute w-full">
         <EmbeddedVideo
-          embedURL={`${embedTvShowUrl}${mediaId}&s=${season}&e=${episode}`}
+          embedURL={`${embedTvShowUrl}${mediaId}-${season}-${episode}`}
         />
       </View>
     </View>

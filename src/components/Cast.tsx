@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import React from "react";
-import { fallbackPersonImage, image185 } from "@/api/mediaDB";
+import { fallbackPersonImage, image185 } from "@/api/media";
 import MarqueeView from "react-native-marquee-view";
 import * as WebBrowser from "expo-web-browser";
 interface CastProps {

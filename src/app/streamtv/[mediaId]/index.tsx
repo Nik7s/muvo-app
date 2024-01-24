@@ -29,7 +29,7 @@ import {
   fetchTvContentRatingByID,
   baseUrl,
   fetchTvEpisodeDetails,
-} from "../../../../api/mediaDB";
+} from "@/api/media";
 import { MediaData, VideoDataItem } from "@/assets/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
@@ -219,7 +219,7 @@ export default function ShowsScreen() {
                 selectedValue={selectedSeason}
                 onValueChange={(itemValue) => setSelectedSeason(itemValue)}
                 style={{ color: "white", width: 150 }}
-                dropdownIconColor={"#84cc16"}
+                dropdownIconColor={"rgb(34 197 94)"}
               >
                 {show?.seasons
                   ?.filter((season: any) => season.name !== "Specials")

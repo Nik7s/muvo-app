@@ -4,40 +4,40 @@ const BASE_URL = process.env.EXPO_PUBLIC_TMDB_API_URL;
 const API_KEY = process.env.EXPO_PUBLIC_TMDB_API_KEY;
 export const baseUrl = "https://image.tmdb.org/t/p/original";
 export const baseYoutubeUrl = "https://www.youtube.com/watch?v=";
-export const embedMovieUrl = `https://www.2embed.cc/embed/`;
-export const embedTvShowUrl = `https://www.2embed.cc/embedtv/`;
+export const embedMovieUrl = `https://autoembed.co/movie/tmdb/`;
+export const embedTvShowUrl = `https://autoembed.co/tv/tmdb/`;
 
-const trendingMediaEndpoint = (type: string) =>
+const trendingMediaEndpoint = (type) =>
   `${BASE_URL}/trending/${type}/day?api_key=${API_KEY}&language=en-US`;
-const popularMediaEndpoint = (type: string) =>
+const popularMediaEndpoint = (type) =>
   `${BASE_URL}/${type}/popular?api_key=${API_KEY}&language=en-US`;
-const topRatedMediaEndpoint = (type: string) =>
+const topRatedMediaEndpoint = (type) =>
   `${BASE_URL}/${type}/top_rated?api_key=${API_KEY}&language=en-US`;
-const searchMediaEndpoint = (type: string, query: string) =>
+const searchMediaEndpoint = (type, query) =>
   `${BASE_URL}/search/${type}?api_key=${API_KEY}&language=en-US&query=${query}`;
 
-const mediaDetailsEndpoint = (type: string, id: string) =>
+const mediaDetailsEndpoint = (type, id) =>
   `${BASE_URL}/${type}/${id}?api_key=${API_KEY}&language=en-US`;
-const movieContentRatingEndpoint = (id: string) =>
+const movieContentRatingEndpoint = (id) =>
   `${BASE_URL}/movie/${id}/release_dates?api_key=${API_KEY}&language=en-US`;
-const tvContentRatingEndpoint = (id: string) =>
+const tvContentRatingEndpoint = (id) =>
   `${BASE_URL}/tv/${id}/content_ratings?api_key=${API_KEY}&language=en-US`;
-const mediaVideosEndpoint = (type: string, id: string) =>
+const mediaVideosEndpoint = (type, id) =>
   `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=en-US`;
-const mediaCreditsEndpoint = (type: string, id: string) =>
+const mediaCreditsEndpoint = (type, id) =>
   `${BASE_URL}/${type}/${id}/credits?api_key=${API_KEY}&language=en-US`;
-const recommendedMediaEndpoint = (type: string, id: string) =>
+const recommendedMediaEndpoint = (type, id) =>
   `${BASE_URL}/${type}/${id}/recommendations?api_key=${API_KEY}&language=en-US`;
-const similarMediaEndpoint = (type: string, id: string) =>
+const similarMediaEndpoint = (type, id) =>
   `${BASE_URL}/${type}/${id}/similar?api_key=${API_KEY}&language=en-US`;
-const TVEpisodeDetailsByIDandSeason = (id: string, season: string) =>
+const TVEpisodeDetailsByIDandSeason = (id, season) =>
   `${BASE_URL}/tv/${id}/season/${season}?api_key=${API_KEY}&language=en-US`;
 
-export const image500 = (posterPath: string) =>
+export const image500 = (posterPath) =>
   posterPath ? "https://image.tmdb.org/t/p/w500" + posterPath : null;
-export const image342 = (posterPath: string) =>
+export const image342 = (posterPath) =>
   posterPath ? "https://image.tmdb.org/t/p/w342" + posterPath : null;
-export const image185 = (posterPath: string) =>
+export const image185 = (posterPath) =>
   posterPath ? "https://image.tmdb.org/t/p/w185" + posterPath : null;
 
 export const fallbackMoviePoster =
@@ -45,7 +45,7 @@ export const fallbackMoviePoster =
 export const fallbackPersonImage =
   "https://github.com/rishabh1S/muvo/blob/main/public/images/avatar.png?raw=true";
 
-const apiCall = async (endpoint: string, params: object = {}) => {
+const apiCall = async (endpoint, params = {}) => {
   const options = {
     method: "GET",
     url: endpoint,
@@ -61,42 +61,42 @@ const apiCall = async (endpoint: string, params: object = {}) => {
   }
 };
 
-export const fetchTrendingMedias = (type: string) => {
+export const fetchTrendingMedias = (type) => {
   return apiCall(trendingMediaEndpoint(type));
 };
-export const fetchPopularMedias = (type: string) => {
+export const fetchPopularMedias = (type) => {
   return apiCall(popularMediaEndpoint(type));
 };
-export const fetchTopRatedMedias = (type: string) => {
+export const fetchTopRatedMedias = (type) => {
   return apiCall(topRatedMediaEndpoint(type));
 };
 
-export const fetchTVorMovieDetailsByID = (type: string, id: string) => {
+export const fetchTVorMovieDetailsByID = (type, id) => {
   return apiCall(mediaDetailsEndpoint(type, id));
 };
-export const fetchMovieContentRatingByID = (id: string) => {
+export const fetchMovieContentRatingByID = (id) => {
   return apiCall(movieContentRatingEndpoint(id));
 };
-export const fetchTvContentRatingByID = (id: string) => {
+export const fetchTvContentRatingByID = (id) => {
   return apiCall(tvContentRatingEndpoint(id));
 };
-export const fetchTVorMovieVideosByID = (type: string, id: string) => {
+export const fetchTVorMovieVideosByID = (type, id) => {
   return apiCall(mediaVideosEndpoint(type, id));
 };
-export const fetchTVorMovieCreditsByID = (type: string, id: string) => {
+export const fetchTVorMovieCreditsByID = (type, id) => {
   return apiCall(mediaCreditsEndpoint(type, id));
 };
-export const fetchRecommendedTVorMovies = (type: string, id: string) => {
+export const fetchRecommendedTVorMovies = (type, id) => {
   return apiCall(recommendedMediaEndpoint(type, id));
 };
-export const fetchSimilarTVorMovies = (type: string, id: string) => {
+export const fetchSimilarTVorMovies = (type, id) => {
   return apiCall(similarMediaEndpoint(type, id));
 };
 
-export const fetchTVorMovieSearchResults = (type: string, query: string) => {
+export const fetchTVorMovieSearchResults = (type, query) => {
   return apiCall(searchMediaEndpoint(type, query));
 };
 
-export const fetchTvEpisodeDetails = (id: string, season: string) => {
+export const fetchTvEpisodeDetails = (id, season) => {
   return apiCall(TVEpisodeDetailsByIDandSeason(id, season));
 };

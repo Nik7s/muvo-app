@@ -5,21 +5,33 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
+  Alert,
 } from "react-native";
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { router } from "expo-router";
+import React, { useState } from "react";
+import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import axios from "axios";
 
 var { width, height } = Dimensions.get("window");
 
-export default function SignupScreen() {
+export default function RegisterScreen() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const router = useRouter();
+
   return (
     <LinearGradient
       colors={["#000", "#011", "#121"]}
       className="flex-1 h-full w-full"
     >
-      <StatusBar style="light" />
+      <SafeAreaView className="flex-row justify-center items-center pt-7 z-20">
+        <Image
+          className="w-32 h-10"
+          source={require("../../../assets/images/logo.png")}
+        />
+      </SafeAreaView>
       <View className="absolute">
         <Image
           style={{ width, height: height * 0.5 }}
@@ -28,32 +40,38 @@ export default function SignupScreen() {
         <LinearGradient
           colors={["transparent", "rgba(0, 17, 17, 0.8)", "rgba(0, 17, 17, 1)"]}
           style={{ width, height: height * 0.5 }}
-          className="absolute bottom-0 z-10"
+          className="absolute"
         />
       </View>
-      <View className="h-full w-full flex justify-evenly pt-48 pb-10 z-10">
+      <View className="h-full w-full flex justify-center space-y-16 pb-10 z-10">
         <View className="flex items-center">
           <Text className="text-white font-bold tracking-widest text-6xl">
-            Sign Up
+            Register
           </Text>
         </View>
         <View className="flex items-center mx-5 space-y-4">
-          <View className="bg-black/50 p-5 rounded-2xl w-full">
+          <View className="bg-white/10 p-5 rounded-2xl w-full">
             <TextInput
-              placeholder="Username"
+              value={name}
+              onChangeText={(text) => setName(text)}
+              placeholder="Name"
               placeholderTextColor={"gray"}
               className="text-white"
             />
           </View>
-          <View className="bg-black/50 p-5 rounded-2xl w-full">
+          <View className="bg-white/10 p-5 rounded-2xl w-full">
             <TextInput
-              placeholder="Email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              placeholder="Email address"
               placeholderTextColor={"gray"}
               className="text-white"
             />
           </View>
-          <View className="bg-black/50 p-5 rounded-2xl w-full mb-3">
+          <View className="bg-white/10 p-5 rounded-2xl w-full mb-3">
             <TextInput
+              value={password}
+              onChangeText={(text) => setPassword(text)}
               placeholder="Password"
               placeholderTextColor={"gray"}
               secureTextEntry
@@ -63,7 +81,7 @@ export default function SignupScreen() {
           <View className="w-full">
             <TouchableOpacity className="w-full bg-green-400 p-3 rounded-2xl mb-5">
               <Text className="text-xl font-bold text-white text-center">
-                SignUp
+                Sign Up
               </Text>
             </TouchableOpacity>
           </View>

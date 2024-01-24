@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { View, TouchableOpacity, Image } from "react-native";
 import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 import { Feather } from "@expo/vector-icons";
-import { baseUrl } from "@/api/mediaDB";
+import { baseUrl } from "@/api/media";
 
 interface VideoTrailerProps {
   videoId?: string;

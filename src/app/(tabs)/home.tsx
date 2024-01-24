@@ -13,7 +13,7 @@ import {
   fetchTrendingMedias,
   fetchPopularMedias,
   fetchTopRatedMedias,
-} from "../../../api/mediaDB";
+} from "@/api/media";
 import { Feather } from "@expo/vector-icons";
 import { MediaData } from "@/assets/types";
 import { LinearGradient } from "expo-linear-gradient";

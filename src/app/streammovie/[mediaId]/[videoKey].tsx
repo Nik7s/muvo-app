@@ -13,7 +13,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import {
   fetchRecommendedTVorMovies,
   fetchTVorMovieVideosByID,
-} from "@/api/mediaDB";
+} from "@/api/media";
 import { VideoDataItem } from "@/assets/types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";

@@ -1,4 +1,4 @@
-import { baseUrl } from "@/api/mediaDB";
+import { baseUrl } from "@/api/media";
 import { Episode } from "@/assets/types";
 import { router } from "expo-router";
 import React from "react";

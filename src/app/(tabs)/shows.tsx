@@ -14,7 +14,7 @@ import {
   fetchPopularMedias,
   fetchTopRatedMedias,
   fetchTrendingMedias,
-} from "@/api/mediaDB";
+} from "@/api/media";
 import { LinearGradient } from "expo-linear-gradient";
 
 const ios = Platform.OS === "ios";

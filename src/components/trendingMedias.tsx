@@ -8,7 +8,7 @@ import {
 import React from "react";
 import Carousel from "react-native-snap-carousel";
 import { router } from "expo-router";
-import { fallbackMoviePoster, image500 } from "../../api/mediaDB";
+import { fallbackMoviePoster, image500 } from "@/api/media";
 import { MediaData } from "@/assets/types";
 import { Feather } from "@expo/vector-icons";
 

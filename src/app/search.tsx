@@ -17,7 +17,7 @@ import {
   fallbackMoviePoster,
   image185,
   fetchTVorMovieSearchResults,
-} from "@/api/mediaDB";
+} from "@/api/media";
 import { MediaData } from "@/assets/types";
 import MarqueeView from "react-native-marquee-view";
 import { Feather } from "@expo/vector-icons";
