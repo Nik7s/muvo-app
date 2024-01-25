@@ -52,10 +52,11 @@ export default function RegisterScreen() {
       await setDoc(doc(FIRESTORE_DB, "Users", user.uid), {
         name: name,
         email: email,
+        userId: user.uid,
       });
     } catch (error: any) {
       console.log(error);
-      Alert.alert("Registration failed: " + error.message);
+      alert("Registration failed: " + error.message);
     } finally {
       setLoading(false);
     }

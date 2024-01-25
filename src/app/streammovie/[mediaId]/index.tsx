@@ -115,7 +115,7 @@ export default function MovieScreen() {
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <StatusBar backgroundColor="black" />
-      <SafeAreaView className="absolute z-20 w-full flex-row px-5 py-2">
+      <SafeAreaView className="absolute z-20 w-full flex-row px-5">
         <TouchableOpacity onPress={() => router.back()}>
           <MaterialIcons name="keyboard-backspace" size={26} color="white" />
         </TouchableOpacity>
@@ -205,6 +205,8 @@ export default function MovieScreen() {
               </Text>
               <MediaActions
                 shareLink={`https://muvotv.vercel.app/movies/${mediaId}`}
+                mediaId={mediaId}
+                mediaType="movie"
               />
             </View>
           ) : null}

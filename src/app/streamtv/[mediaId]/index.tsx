@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
+  StatusBar,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
@@ -126,7 +127,8 @@ export default function ShowsScreen() {
 
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
-      <SafeAreaView className="absolute z-20 w-full flex-row px-5 py-2">
+      <StatusBar backgroundColor="black" />
+      <SafeAreaView className="absolute z-20 w-full flex-row px-5">
         <TouchableOpacity onPress={() => router.back()}>
           <MaterialIcons name="keyboard-backspace" size={26} color="white" />
         </TouchableOpacity>
@@ -215,6 +217,8 @@ export default function ShowsScreen() {
               </Text>
               <MediaActions
                 shareLink={`https://muvotv.vercel.app/shows/${mediaId}`}
+                mediaId={mediaId}
+                mediaType="tv"
               />
               <Picker
                 selectedValue={selectedSeason}
