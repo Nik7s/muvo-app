@@ -24,8 +24,10 @@ export default function LoginScreen() {
   const auth = FIREBASE_AUTH;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, () => {
-      router.replace("/(tabs)/home");
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.replace("/(tabs)/home");
+      }
     });
 
     return () => unsubscribe();
@@ -35,7 +37,6 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log(res);
     } catch (error: any) {
       console.log(error);
       alert("Sign In failed: " + error.message);

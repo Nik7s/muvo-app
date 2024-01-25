@@ -12,11 +12,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { FIREBASE_AUTH } from "@/firebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "@/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 var { width, height } = Dimensions.get("window");
 
@@ -29,8 +30,10 @@ export default function RegisterScreen() {
   const auth = FIREBASE_AUTH;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, () => {
-      router.replace("/(tabs)/home");
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.replace("/(tabs)/home");
+      }
     });
 
     return () => unsubscribe();
@@ -39,11 +42,20 @@ export default function RegisterScreen() {
   const register = async () => {
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      Alert.alert("Check you emails!");
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      await setDoc(doc(FIRESTORE_DB, "Users", user.uid), {
+        name: name,
+        email: email,
+      });
     } catch (error: any) {
       console.log(error);
-      alert("Registration failed: " + error.message);
+      Alert.alert("Registration failed: " + error.message);
     } finally {
       setLoading(false);
     }

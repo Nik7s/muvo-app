@@ -42,8 +42,8 @@ export default function HomeScreen() {
       fetchTrendingMedias("tv"),
     ]);
     const trendingAll = [
-      ...tvData?.results.slice(0, 5),
-      ...movieData?.results.slice(0, 5),
+      ...tvData?.results.slice(0, 10),
+      ...movieData?.results.slice(0, 10),
     ];
     setTrending(trendingAll);
     setLoading(false);
