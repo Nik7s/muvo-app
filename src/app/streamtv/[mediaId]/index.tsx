@@ -152,6 +152,7 @@ export default function ShowsScreen() {
               outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
               controlsEnabled={false}
               isOverlay={true}
+              isMuted={true}
             />
           )}
         </View>

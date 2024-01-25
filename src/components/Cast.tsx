@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import React from "react";
-import { fallbackPersonImage, image185 } from "@/api/media";
+import { fallbackPersonImage, image342 } from "@/api/media";
 import MarqueeView from "react-native-marquee-view";
 import * as WebBrowser from "expo-web-browser";
 interface CastProps {
@@ -25,7 +25,7 @@ const CastItem = ({ person }: { person: any }) => (
       <Image
         className="rounded-2xl h-24 w-20"
         source={{
-          uri: image185(person?.profile_path) || fallbackPersonImage,
+          uri: image342(person?.profile_path) || fallbackPersonImage,
         }}
       />
     </View>

@@ -37,13 +37,13 @@ export const image500 = (posterPath) =>
   posterPath ? "https://image.tmdb.org/t/p/w500" + posterPath : null;
 export const image342 = (posterPath) =>
   posterPath ? "https://image.tmdb.org/t/p/w342" + posterPath : null;
-export const image185 = (posterPath) =>
-  posterPath ? "https://image.tmdb.org/t/p/w185" + posterPath : null;
 
 export const fallbackMoviePoster =
-  "https://github.com/rishabh1S/muvo/blob/main/public/images/no-poster.png?raw=true";
+  "https://res.cloudinary.com/dnp36kqdc/image/upload/v1706180865/Muvo/no-poster_1_xmqxut.png";
 export const fallbackPersonImage =
-  "https://github.com/rishabh1S/muvo/blob/main/public/images/avatar.png?raw=true";
+  "https://res.cloudinary.com/dnp36kqdc/image/upload/v1706180865/Muvo/avatar_troici.png";
+export const fallbackThumbnailImage =
+  "https://res.cloudinary.com/dnp36kqdc/image/upload/v1706180865/Muvo/no-backdrop_p1zg8y.png";
 
 const apiCall = async (endpoint, params = {}) => {
   const options = {

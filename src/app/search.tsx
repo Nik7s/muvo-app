@@ -8,15 +8,16 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
 } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { debounce } from "lodash";
 import { router } from "expo-router";
-import { Loading } from "@/src/components";
+import { Loading, MediaGrid } from "@/src/components";
 import {
   fallbackMoviePoster,
-  image185,
+  image342,
   fetchTVorMovieSearchResults,
+  fetchTrendingMedias,
 } from "@/api/media";
 import { MediaData } from "@/assets/types";
 import MarqueeView from "react-native-marquee-view";
@@ -28,6 +29,11 @@ const { width, height } = Dimensions.get("window");
 export default function SearchScreen() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<MediaData[]>([]);
+  const [trending, setTrending] = useState<MediaData[]>([]);
+
+  useEffect(() => {
+    getTrendingMedias();
+  }, []);
 
   const handleSearch = async (query: string) => {
     try {
@@ -39,11 +45,11 @@ export default function SearchScreen() {
         ]);
         setLoading(false);
         const resultsAll = [
-          ...(tvData?.results || []).map((result: any) => ({
+          ...(tvData?.results).map((result: any) => ({
             ...result,
             mediaType: "tv",
           })),
-          ...(movieData?.results || []).map((result: any) => ({
+          ...(movieData?.results).map((result: any) => ({
             ...result,
             mediaType: "movie",
           })),
@@ -61,10 +67,19 @@ export default function SearchScreen() {
 
   const handleTextDebounce = useCallback(debounce(handleSearch, 300), []);
 
+  const getTrendingMedias = async () => {
+    const [tvData, movieData] = await Promise.all([
+      fetchTrendingMedias("movie"),
+      fetchTrendingMedias("tv"),
+    ]);
+    const trendingAll = [...tvData?.results, ...movieData?.results];
+    setTrending(trendingAll);
+    setLoading(false);
+  };
+
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <SafeAreaView className="flex-1">
-        {/* search input */}
         <View className="mx-4 my-3 flex-row justify-between items-center border border-zinc-700 rounded-full">
           <TextInput
             onChangeText={handleTextDebounce}
@@ -105,7 +120,7 @@ export default function SearchScreen() {
                       <Image
                         source={{
                           uri:
-                            image185(result?.poster_path) ||
+                            image342(result?.poster_path) ||
                             fallbackMoviePoster,
                         }}
                         className="rounded-2xl"
@@ -129,11 +144,8 @@ export default function SearchScreen() {
             </View>
           </ScrollView>
         ) : (
-          <View className="flex-row justify-center">
-            <Image
-              source={require("../../assets/images/movieTime.png")}
-              className="h-96 w-96"
-            />
+          <View className="flex-1">
+            <MediaGrid title={"People Search for"} data={trending} />
           </View>
         )}
       </SafeAreaView>

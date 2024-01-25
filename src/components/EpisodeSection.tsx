@@ -1,4 +1,4 @@
-import { baseUrl } from "@/api/media";
+import { baseUrl, fallbackThumbnailImage } from "@/api/media";
 import { Episode } from "@/assets/types";
 import { router } from "expo-router";
 import React from "react";
@@ -31,7 +31,11 @@ export default function EpisodeSection({
           >
             <View className="flex-row my-1 space-x-4">
               <Image
-                source={{ uri: `${baseUrl}${episode.still_path}` }}
+                source={{
+                  uri: episode.still_path
+                    ? `${baseUrl}${episode.still_path}`
+                    : fallbackThumbnailImage,
+                }}
                 alt={`Episode ${episode.episode_number}`}
                 className="aspect-video rounded-md w-28"
               />

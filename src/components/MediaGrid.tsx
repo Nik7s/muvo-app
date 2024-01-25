@@ -8,24 +8,25 @@ import {
 } from "react-native";
 import React from "react";
 import { router } from "expo-router";
-import { fallbackMoviePoster, image185 } from "@/api/media";
+import { fallbackMoviePoster, image342 } from "@/api/media";
 const { width, height } = Dimensions.get("window");
 import { MediaData } from "@/assets/types";
 interface MediaGridProps {
   title: string;
   data: any[];
-  mediaType: string;
 }
 
-export default function MediaGrid({ title, data, mediaType }: MediaGridProps) {
+export default function MediaGrid({ title, data }: MediaGridProps) {
   const handlePress = (item: MediaData) => {
     const route =
-      mediaType === "tv" ? `/streamtv/${item.id}` : `/streammovie/${item.id}`;
+      item.media_type === "tv"
+        ? `/streamtv/${item.id}`
+        : `/streammovie/${item.id}`;
     router.navigate(route);
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} className="space-y-3 p-3">
+    <ScrollView showsVerticalScrollIndicator={false} className="space-y-3 px-3">
       <Text className="font-semibold text-xl text-white">{title}</Text>
       <View className="flex-row justify-between flex-wrap">
         {data.map((item, index) => (
@@ -36,7 +37,7 @@ export default function MediaGrid({ title, data, mediaType }: MediaGridProps) {
             <View className="mb-2">
               <Image
                 source={{
-                  uri: image185(item.poster_path) || fallbackMoviePoster,
+                  uri: image342(item.poster_path) || fallbackMoviePoster,
                 }}
                 className="rounded-lg"
                 style={{ width: width * 0.3, height: height * 0.22 }}

@@ -1,14 +1,6 @@
 import { router } from "expo-router";
 import React from "react";
-import {
-  Image,
-  Platform,
-  TouchableOpacity,
-  View,
-  Text,
-  Dimensions,
-  Button,
-} from "react-native";
+import { Image, Platform, TouchableOpacity, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Feather } from "@expo/vector-icons";

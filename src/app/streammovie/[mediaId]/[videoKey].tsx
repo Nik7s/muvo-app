@@ -69,6 +69,7 @@ export default function index() {
             playerHeight={230}
             controlsEnabled={true}
             isOverlay={false}
+            isMuted={false}
           />
         </View>
         {currentVideo && (
@@ -89,11 +90,7 @@ export default function index() {
           />
         )}
         {recommendedMovies.length > 0 && (
-          <MediaGrid
-            title={"More Like This"}
-            data={recommendedMovies}
-            mediaType="movie"
-          />
+          <MediaGrid title={"More Like This"} data={recommendedMovies} />
         )}
       </ScrollView>
     </LinearGradient>

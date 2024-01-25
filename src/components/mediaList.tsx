@@ -10,7 +10,7 @@ import {
 import React from "react";
 import { styles } from "../theme";
 import { router } from "expo-router";
-import { fallbackMoviePoster, image185 } from "@/api/media";
+import { fallbackMoviePoster, image342 } from "@/api/media";
 const { width, height } = Dimensions.get("window");
 import MarqueeView from "react-native-marquee-view";
 import { MediaData } from "@/assets/types";
@@ -38,7 +38,7 @@ export default function MediaList({
       <View className="space-y-1 mr-4">
         <Image
           source={{
-            uri: image185(item.poster_path) || fallbackMoviePoster,
+            uri: image342(item.poster_path) || fallbackMoviePoster,
           }}
           className="rounded-2xl"
           style={{ width: width * 0.33, height: height * 0.22 }}

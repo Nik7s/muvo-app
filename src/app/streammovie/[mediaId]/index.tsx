@@ -27,6 +27,7 @@ import {
 } from "@/api/media";
 import { MediaData, VideoDataItem } from "@/assets/types";
 import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 
 export default function MovieScreen() {
   const { mediaId } = useLocalSearchParams<{ mediaId: string }>();
@@ -99,20 +100,21 @@ export default function MovieScreen() {
           }) =>
             ["IN", "US"].some(
               (country) =>
-                date.iso_3166_1 === country &&
-                date.release_dates[0]?.certification !== ""
+                date?.iso_3166_1 === country &&
+                date?.release_dates[0]?.certification !== ""
             )
         ) ||
         data.results.find(
           (date: { release_dates: { certification: string }[] }) =>
-            date.release_dates[0]?.certification !== ""
+            date?.release_dates[0]?.certification !== ""
         );
-      setContentRating(certification.release_dates[0]?.certification);
+      setContentRating(certification?.release_dates[0]?.certification);
     }
   };
 
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
+      <StatusBar backgroundColor="black" />
       <SafeAreaView className="absolute z-20 w-full flex-row px-5 py-2">
         <TouchableOpacity onPress={() => router.back()}>
           <MaterialIcons name="keyboard-backspace" size={26} color="white" />
@@ -138,6 +140,7 @@ export default function MovieScreen() {
               outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
               controlsEnabled={false}
               isOverlay={true}
+              isMuted={true}
             />
           )}
         </View>
