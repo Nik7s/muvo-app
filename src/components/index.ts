@@ -9,6 +9,7 @@ import MediaActions from "./MediaActions";
 import VideoSection from "./VideoSection";
 import EmbeddedVideo from "./EmbeddedVideo";
 import EpisodeSection from "./EpisodeSection";
+import WatchlistScreen from "./WatchList";
 
 export {
   TrendingMedias,
@@ -22,4 +23,5 @@ export {
   VideoSection,
   EmbeddedVideo,
   EpisodeSection,
+  WatchlistScreen,
 };

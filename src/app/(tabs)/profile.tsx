@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { signOut } from "firebase/auth";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "@/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import WatchList from "@/src/components/WatchList";
 
 const ios = Platform.OS === "ios";
 
@@ -57,23 +58,28 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <View className="flex-1 items-center space-y-3 py-3">
+      <View className="flex-1 space-y-3 py-3">
         {user ? (
-          <View className="flex-row border-b border-neutral-900 pb-5 px-3">
-            <View className="flex-1">
-              <Text className="text-neutral-300 font-light text-base">
-                Welcome back,
-              </Text>
-              <Text className="text-neutral-100 font-bold text-lg">
-                {user.name}
-              </Text>
+          <View className="flex-1 space-y-4">
+            <View className="flex-row border-b border-neutral-800 pb-5 px-3">
+              <View className="flex-1">
+                <Text className="text-neutral-300 font-light text-base">
+                  Welcome back,
+                </Text>
+                <Text className="text-neutral-100 font-medium text-xl">
+                  {user.name}
+                </Text>
+              </View>
+              <TouchableOpacity
+                className="bg-white rounded-md px-4 items-center justify-center"
+                onPress={handleSignOut}
+              >
+                <Text className="text-lg">Sign Out</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              className="bg-white rounded-md px-4 items-center justify-center"
-              onPress={handleSignOut}
-            >
-              <Text className="text-lg">Sign Out</Text>
-            </TouchableOpacity>
+            <View>
+              <WatchList />
+            </View>
           </View>
         ) : (
           <>

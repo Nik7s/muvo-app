@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, TouchableOpacity, Text, Share } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   getDoc,
   doc,
-  setDoc,
-  arrayUnion,
   addDoc,
   collection,
   updateDoc,
@@ -30,27 +28,21 @@ const MediaActions: React.FC<MediaActionsProps> = ({
   const userId = auth.currentUser?.uid;
   const watchlistRef = collection(FIRESTORE_DB, "WatchList");
 
+  const checkWatchlist = useCallback(async () => {
+    const watchlistQuery = query(
+      watchlistRef,
+      where("userId", "==", userId),
+      where("mediaId", "==", mediaId),
+      where("mediaType", "==", mediaType)
+    );
+
+    const querySnapshot = await getDocs(watchlistQuery);
+    setIsWatchlist(!querySnapshot.empty);
+  }, [userId, mediaId, mediaType, isWatchlist, setIsWatchlist, watchlistRef]);
+
   useEffect(() => {
-    const checkWatchlist = async () => {
-      try {
-        const watchlistQuery = query(
-          watchlistRef,
-          where("userId", "==", userId),
-          where("mediaId", "==", mediaId),
-          where("mediaType", "==", mediaType)
-        );
-
-        const querySnapshot = await getDocs(watchlistQuery);
-        setIsWatchlist(!querySnapshot.empty);
-      } catch (error) {
-        console.error("Error checking watchlist:", error);
-      }
-    };
-
-    if (userId) {
-      checkWatchlist();
-    }
-  }, [userId, mediaId, watchlistRef]);
+    checkWatchlist();
+  }, [checkWatchlist]);
 
   const handleWatchlist = async () => {
     try {
@@ -62,7 +54,8 @@ const MediaActions: React.FC<MediaActionsProps> = ({
       const watchlistQuery = query(
         watchlistRef,
         where("userId", "==", userId),
-        where("mediaId", "==", mediaId)
+        where("mediaId", "==", mediaId),
+        where("mediaType", "==", mediaType)
       );
       const querySnapshot = await getDocs(watchlistQuery);
       if (isWatchlist) {
@@ -97,14 +90,6 @@ const MediaActions: React.FC<MediaActionsProps> = ({
     }
   };
 
-  const handleShare = () => {
-    if (shareLink) {
-      Share.share({
-        message: `${shareLink}`,
-      });
-    }
-  };
-
   return (
     <View className="flex-row mt-4 mx-6">
       <TouchableOpacity
@@ -122,7 +107,11 @@ const MediaActions: React.FC<MediaActionsProps> = ({
       </TouchableOpacity>
       <TouchableOpacity
         className="flex-col items-center py-1 mx-6 rounded-full"
-        onPress={() => handleShare()}
+        onPress={() =>
+          Share.share({
+            message: `${shareLink}`,
+          })
+        }
       >
         <MaterialCommunityIcons name="share-outline" size={28} color="white" />
         <Text className="text-neutral-400 text-xs">Share</Text>
