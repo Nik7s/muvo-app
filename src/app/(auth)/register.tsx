@@ -18,6 +18,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { useAuth } from "@/src/context/auth";
 
 var { width, height } = Dimensions.get("window");
 
@@ -27,39 +28,12 @@ export default function RegisterScreen() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const auth = FIREBASE_AUTH;
+  const { signUp } = useAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.replace("/(tabs)/home");
-      }
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
-
-  const register = async () => {
+  const handleRegister = async () => {
     setLoading(true);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-
-      await setDoc(doc(FIRESTORE_DB, "Users", user.uid), {
-        name: name,
-        email: email,
-        userId: user.uid,
-      });
-    } catch (error: any) {
-      console.log(error);
-      alert("Registration failed: " + error.message);
-    } finally {
-      setLoading(false);
-    }
+    await signUp(name, email, password);
+    setLoading(false);
   };
 
   return (
@@ -124,7 +98,7 @@ export default function RegisterScreen() {
               <ActivityIndicator size="large" color="rgb(34 197 94)" />
             ) : (
               <TouchableOpacity
-                onPress={register}
+                onPress={handleRegister}
                 className="w-full bg-green-400 p-3 rounded-2xl mb-5"
               >
                 <Text className="text-xl font-bold text-white text-center">

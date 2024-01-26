@@ -13,6 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from "@/firebaseConfig";
+import { useAuth } from "@/src/context/auth";
 
 var { width, height } = Dimensions.get("window");
 
@@ -21,28 +22,12 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const auth = FIREBASE_AUTH;
+  const { signIn } = useAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.replace("/(tabs)/home");
-      }
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
-
-  const signIn = async () => {
+  const handleSignIn = async () => {
     setLoading(true);
-    try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-      console.log(error);
-      alert("Sign In failed: " + error.message);
-    } finally {
-      setLoading(false);
-    }
+    await signIn(email, password);
+    setLoading(false);
   };
 
   return (
@@ -98,7 +83,7 @@ export default function LoginScreen() {
               <ActivityIndicator size="large" color="rgb(34 197 94)" />
             ) : (
               <TouchableOpacity
-                onPress={signIn}
+                onPress={handleSignIn}
                 className="w-full bg-green-400 p-3 rounded-2xl mb-5"
               >
                 <Text className="text-xl font-bold text-white text-center">
