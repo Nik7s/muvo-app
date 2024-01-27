@@ -16,7 +16,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { FIREBASE_AUTH as auth } from "@/firebaseConfig";
+import { FIREBASE_AUTH as auth } from "@/firebase-config";
 var { width, height } = Dimensions.get("window");
 
 export default function LoginScreen() {

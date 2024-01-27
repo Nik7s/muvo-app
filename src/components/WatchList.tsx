@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { FIRESTORE_DB, FIREBASE_AUTH } from "@/firebaseConfig";
+import { FIRESTORE_DB, FIREBASE_AUTH } from "@/firebase-config";
 import {
   collection,
   deleteDoc,

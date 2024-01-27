@@ -12,7 +12,7 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
-import { FIRESTORE_DB, FIREBASE_AUTH } from "@/firebaseConfig";
+import { FIRESTORE_DB, FIREBASE_AUTH } from "@/firebase-config";
 interface MediaActionsProps {
   shareLink: string | undefined;
   mediaId: string;

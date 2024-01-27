@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import { router } from "expo-router";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { FIRESTORE_DB, FIREBASE_AUTH as auth } from "@/firebaseConfig";
+import { FIRESTORE_DB, FIREBASE_AUTH as auth } from "@/firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 
 const initialState = {

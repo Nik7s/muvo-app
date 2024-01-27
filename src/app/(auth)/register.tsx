@@ -11,7 +11,10 @@ import {
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { FIRESTORE_DB as store, FIREBASE_AUTH as auth } from "@/firebaseConfig";
+import {
+  FIRESTORE_DB as store,
+  FIREBASE_AUTH as auth,
+} from "@/firebase-config";
 import { Feather } from "@expo/vector-icons";
 import {
   createUserWithEmailAndPassword,
