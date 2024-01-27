@@ -12,7 +12,7 @@ import { fallbackMoviePoster, image342 } from "@/api/media";
 const { width, height } = Dimensions.get("window");
 import { MediaData } from "@/assets/types";
 interface MediaGridProps {
-  title: string;
+  title?: string;
   data: any[];
 }
 
@@ -26,8 +26,13 @@ export default function MediaGrid({ title, data }: MediaGridProps) {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} className="space-y-3 px-3">
-      <Text className="font-semibold text-xl text-white">{title}</Text>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      className="space-y-3 px-3 py-2"
+    >
+      {title && (
+        <Text className="font-semibold text-xl text-white">{title}</Text>
+      )}
       <View className="flex-row justify-between flex-wrap">
         {data.map((item, index) => (
           <TouchableWithoutFeedback

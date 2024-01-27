@@ -9,11 +9,12 @@ import {
 } from "react-native";
 import React from "react";
 import { styles } from "../theme";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { fallbackMoviePoster, image342 } from "@/api/media";
 const { width, height } = Dimensions.get("window");
 import MarqueeView from "react-native-marquee-view";
 import { MediaData } from "@/assets/types";
+import { useGlobal } from "../context/global";
 interface mediaListProps {
   title: string;
   data: any[];
@@ -27,6 +28,9 @@ export default function MediaList({
   mediaType,
   hideSeeAll,
 }: mediaListProps) {
+  const { setSeeAll } = useGlobal();
+  const router = useRouter();
+
   const handlePress = (item: MediaData) => {
     const route =
       mediaType === "tv" ? `/streamtv/${item.id}` : `/streammovie/${item.id}`;
@@ -58,12 +62,17 @@ export default function MediaList({
     </TouchableWithoutFeedback>
   );
 
+  const handleSeeAll = () => {
+    setSeeAll(title, data);
+    router.push(`/seeAll`);
+  };
+
   return (
     <View className="mb-8 space-y-4">
       <View className="mx-4 flex-row justify-between items-center">
         <Text className="font-semibold text-xl text-white">{title}</Text>
         {!hideSeeAll && (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleSeeAll}>
             <Text style={styles.text} className="text-lg">
               See All
             </Text>

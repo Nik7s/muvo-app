@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { AuthProvider } from "../context/auth";
+import { GlobalProvider } from "../context/global";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -41,35 +42,49 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={DarkTheme}>
       <AuthProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="streammovie/[mediaId]/index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="streammovie/[mediaId]/[videoKey]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="streammovie/[mediaId]/watch"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="streamtv/[mediaId]/index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="streamtv/[mediaId]/[videoKey]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="streamtv/[mediaId]/[season]/[episode]/watch"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="search" options={{ headerShown: false }} />
-        </Stack>
+        <GlobalProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="streammovie/[mediaId]/index"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="streammovie/[mediaId]/[videoKey]"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="streammovie/[mediaId]/watch"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="streamtv/[mediaId]/index"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="streamtv/[mediaId]/[videoKey]"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="streamtv/[mediaId]/[season]/[episode]/watch"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="search" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="seeAll"
+              options={{
+                headerStyle: {
+                  backgroundColor: "#000",
+                },
+                headerTitleStyle: {
+                  fontWeight: "600",
+                  fontSize: 20,
+                },
+              }}
+            />
+          </Stack>
+        </GlobalProvider>
       </AuthProvider>
     </ThemeProvider>
   );
