@@ -5,12 +5,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { router } from "expo-router";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { FIRESTORE_DB, FIREBASE_AUTH as auth } from "@/firebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -54,7 +49,7 @@ export function AuthProvider({ children }: PropsWithChildren): JSX.Element {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
+      if (firebaseUser?.emailVerified) {
         const userDoc = await getDoc(
           doc(FIRESTORE_DB, "Users", firebaseUser.uid)
         );

@@ -13,7 +13,10 @@ import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { FIRESTORE_DB as store, FIREBASE_AUTH as auth } from "@/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 var { width, height } = Dimensions.get("window");
@@ -35,12 +38,16 @@ export default function RegisterScreen() {
         password
       );
       const newUser = userCredential.user;
+      await sendEmailVerification(newUser);
       await setDoc(doc(store, "Users", newUser.uid), {
         name: name,
         email: email,
         userId: newUser.uid,
         createdAt: newUser.metadata.creationTime!,
       });
+      alert(
+        "Registration successful. Please check your email for verification."
+      );
     } catch (error: any) {
       alert("Registration failed: " + error.message);
     } finally {
