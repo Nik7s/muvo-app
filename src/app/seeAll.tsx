@@ -16,7 +16,7 @@ export default function seeAll() {
 
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
-      <MediaGrid data={seeAllData.data} />
+      <MediaGrid data={seeAllData.data} mediaType={seeAllData.mediaType} />
     </LinearGradient>
   );
 }

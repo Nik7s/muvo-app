@@ -14,12 +14,13 @@ import { MediaData } from "@/assets/types";
 interface MediaGridProps {
   title?: string;
   data: any[];
+  mediaType?: string;
 }
 
-export default function MediaGrid({ title, data }: MediaGridProps) {
+export default function MediaGrid({ title, data, mediaType }: MediaGridProps) {
   const handlePress = (item: MediaData) => {
     const route =
-      item.media_type === "tv"
+      (item.media_type || mediaType) === "tv"
         ? `/streamtv/${item.id}`
         : `/streammovie/${item.id}`;
     router.navigate(route);

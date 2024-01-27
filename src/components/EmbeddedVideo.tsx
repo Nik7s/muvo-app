@@ -1,7 +1,6 @@
 import { View } from "react-native";
 import React from "react";
 import { WebView } from "react-native-webview";
-import * as WebBrowser from "expo-web-browser";
 interface EmbeddedVideoProps {
   embedURL: string;
 }

@@ -8,11 +8,12 @@ interface SeeAllContextProps {
 interface SeeAllData {
   title: string;
   data: MediaData[];
+  mediaType: string;
 }
 
 interface SeeAllContextValue {
   seeAllData: SeeAllData;
-  setSeeAll: (title: string, data: MediaData[]) => void;
+  setSeeAll: (title: string, data: MediaData[], mediaType: string) => void;
 }
 
 const GlobalContext = createContext<SeeAllContextValue | undefined>(undefined);
@@ -21,10 +22,11 @@ export const GlobalProvider: React.FC<SeeAllContextProps> = ({ children }) => {
   const [seeAllData, setSeeAllData] = useState<SeeAllData>({
     title: "",
     data: [],
+    mediaType: "",
   });
 
-  const setSeeAll = (title: string, data: MediaData[]) => {
-    setSeeAllData({ title, data });
+  const setSeeAll = (title: string, data: MediaData[], mediaType: string) => {
+    setSeeAllData({ title, data, mediaType });
   };
 
   return (

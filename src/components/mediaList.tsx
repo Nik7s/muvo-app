@@ -63,7 +63,7 @@ export default function MediaList({
   );
 
   const handleSeeAll = () => {
-    setSeeAll(title, data);
+    setSeeAll(title, data, mediaType);
     router.push(`/seeAll`);
   };
 
