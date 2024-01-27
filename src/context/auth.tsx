@@ -7,7 +7,7 @@ import React, {
 import { router } from "expo-router";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { FIRESTORE_DB, FIREBASE_AUTH as auth } from "@/firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const initialState = {
   uid: "",

@@ -10,10 +10,6 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
