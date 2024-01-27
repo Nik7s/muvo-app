@@ -1,15 +1,13 @@
 import {
   View,
   Text,
-  Dimensions,
   TouchableOpacity,
   ScrollView,
-  Platform,
   StatusBar,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
@@ -138,7 +136,6 @@ export default function ShowsScreen() {
         contentContainerStyle={{ paddingBottom: 20 }}
         className="flex-1"
       >
-        {/* back button and showposter */}
         <View className="w-full">
           {loading ? (
             <Loading />

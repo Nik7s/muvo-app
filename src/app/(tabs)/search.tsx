@@ -80,7 +80,7 @@ export default function SearchScreen() {
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <SafeAreaView className="flex-1">
-        <View className="mx-4 my-3 flex-row justify-between items-center border border-zinc-700 rounded-full">
+        <View className="m-3 flex-row justify-between items-center border border-zinc-700 rounded-full">
           <TextInput
             onChangeText={handleTextDebounce}
             placeholder="Search Movies, TV and Dramas..."
@@ -123,7 +123,7 @@ export default function SearchScreen() {
                             image342(result?.poster_path) ||
                             fallbackMoviePoster,
                         }}
-                        className="rounded-2xl"
+                        className="rounded-xl"
                         style={{ width: width * 0.44, height: height * 0.3 }}
                       />
                       {(result.name || result.title).length > 22 ? (

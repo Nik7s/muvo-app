@@ -11,12 +11,12 @@ interface VideoSectionProps {
   mediaType: string;
 }
 
-export default function VideoSection({
+const VideoSection: React.FC<VideoSectionProps> = ({
   videosData,
   title,
   mediaId,
   mediaType,
-}: VideoSectionProps) {
+}) => {
   const renderVideoItem = ({ item }: { item: VideoDataItem }) => (
     <TouchableOpacity
       onPress={() => {
@@ -59,4 +59,6 @@ export default function VideoSection({
       />
     </View>
   );
-}
+};
+
+export default React.memo(VideoSection);

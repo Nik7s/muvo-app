@@ -13,7 +13,7 @@ import { EmbeddedVideo } from "@/src/components";
 import { embedTvShowUrl, fetchTVorMovieDetailsByID } from "@/api/media";
 import { MediaData } from "@/assets/types";
 
-export default function watch() {
+export default function Watch() {
   const { mediaId, season, episode } = useLocalSearchParams<{
     mediaId: string;
     season: string;

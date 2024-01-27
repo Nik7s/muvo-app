@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { View, TouchableOpacity, Image } from "react-native";
 import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 import { Feather } from "@expo/vector-icons";
-import { baseUrl } from "@/api/media";
-
+import * as ScreenOrientation from "expo-screen-orientation";
 interface VideoTrailerProps {
   videoId?: string;
   thumbnailUrl: string | undefined;
@@ -55,17 +54,28 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
                 playerRef.current?.seekTo(0, true);
               }
             }}
+            onFullScreenChange={async (isFullScreen) => {
+              if (isFullScreen) {
+                await ScreenOrientation.lockAsync(
+                  ScreenOrientation.OrientationLock.LANDSCAPE
+                );
+              } else {
+                await ScreenOrientation.lockAsync(
+                  ScreenOrientation.OrientationLock.PORTRAIT
+                );
+              }
+            }}
           />
           {isOverlay && (
             <TouchableOpacity
-              className="absolute bottom-2 right-1 rounded-full p-2 z-20"
+              className="absolute bottom-0 right-0 rounded-full p-3 z-20"
               onPress={() => setIsMute(!isMute)}
             >
-              {isMute ? (
-                <Feather name="volume-x" size={24} color="white" />
-              ) : (
-                <Feather name="volume-2" size={24} color="white" />
-              )}
+              <Feather
+                name={isMute ? "volume-x" : "volume-2"}
+                size={24}
+                color="white"
+              />
             </TouchableOpacity>
           )}
         </>

@@ -7,27 +7,43 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { FIREBASE_AUTH } from "@/firebaseConfig";
-import { useAuth } from "@/src/context/auth";
-
+import { Feather } from "@expo/vector-icons";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { FIREBASE_AUTH as auth } from "@/firebaseConfig";
 var { width, height } = Dimensions.get("window");
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { signIn } = useAuth();
 
   const handleSignIn = async () => {
-    setLoading(true);
-    await signIn(email, password);
-    setLoading(false);
+    try {
+      setLoading(true);
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      alert("Sign In failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent. Please check your email.");
+    } catch (error: any) {
+      alert(`Error sending password reset email ${error}`);
+    }
   };
 
   return (
@@ -53,13 +69,13 @@ export default function LoginScreen() {
         />
       </View>
       <View className="h-full w-full flex justify-center space-y-16 pb-10 z-10">
-        <View className="flex items-center">
-          <Text className="text-white font-bold tracking-widest text-6xl">
-            Login
+        <View className="flex mx-5">
+          <Text className="text-white font-bold tracking-widest text-5xl">
+            Welcome Back!
           </Text>
         </View>
         <View className="flex items-center mx-5 space-y-4">
-          <View className="bg-white/10 p-5 rounded-2xl w-full">
+          <View className="bg-white/10 p-4 rounded-2xl w-full">
             <TextInput
               value={email}
               onChangeText={(text) => setEmail(text)}
@@ -68,30 +84,43 @@ export default function LoginScreen() {
               className="text-white"
             />
           </View>
-          <View className="bg-white/10 p-5 rounded-2xl w-full mb-3">
-            <TextInput
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="Password"
-              placeholderTextColor={"gray"}
-              secureTextEntry
-              className="text-white"
-            />
-          </View>
-          <View className="w-full">
-            {loading ? (
-              <ActivityIndicator size="large" color="rgb(34 197 94)" />
-            ) : (
+          <View className="w-full mb-5">
+            <View className="bg-white/10 p-4 rounded-2xl">
+              <TextInput
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                placeholder="Password"
+                placeholderTextColor={"gray"}
+                secureTextEntry={!showPassword}
+                className="text-white"
+              />
               <TouchableOpacity
-                onPress={handleSignIn}
-                className="w-full bg-green-400 p-3 rounded-2xl mb-5"
+                onPress={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-[18px]"
               >
-                <Text className="text-xl font-bold text-white text-center">
-                  Login
-                </Text>
+                <Feather
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={24}
+                  color="#aeae"
+                />
               </TouchableOpacity>
-            )}
+            </View>
+            <TouchableOpacity
+              onPress={handleForgotPassword}
+              className="flex-row justify-end mt-2"
+            >
+              <Text className="text-green-500">Forgot Password?</Text>
+            </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            onPress={handleSignIn}
+            className="w-full bg-green-400 p-3 rounded-xl mb-5 flex-row items-center justify-center space-x-4"
+          >
+            <Text className="text-xl font-bold text-white text-center">
+              Login
+            </Text>
+            {loading && <ActivityIndicator color="#aeae" />}
+          </TouchableOpacity>
           <View className="flex-row justify-center">
             <Text className="text-neutral-300">First time using Muvo? </Text>
             <TouchableOpacity onPress={() => router.replace("/register")}>

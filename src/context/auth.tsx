@@ -4,7 +4,7 @@ import React, {
   useContext,
   PropsWithChildren,
 } from "react";
-import { router, useRootNavigationState, useSegments } from "expo-router";
+import { router } from "expo-router";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -17,7 +17,6 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 const initialState = {
   uid: "",
   createdAt: "",
-  lastLoginAt: "",
   email: "",
   name: "",
 };
@@ -25,22 +24,17 @@ const initialState = {
 interface User {
   uid: string;
   createdAt: string;
-  lastLoginAt: string;
   email: string;
   name: string;
 }
 
 interface ContextInterface {
   user: User | null;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (name: string, email: string, password: string) => Promise<void>;
   signOut: () => void;
 }
 
 const contextInitialState: ContextInterface = {
   user: initialState,
-  signIn: async () => {},
-  signUp: async () => {},
   signOut: () => {},
 };
 
@@ -67,7 +61,6 @@ export function AuthProvider({ children }: PropsWithChildren): JSX.Element {
         const userData: User = {
           uid: firebaseUser.providerData[0].uid,
           createdAt: firebaseUser.metadata.creationTime!,
-          lastLoginAt: firebaseUser.metadata.lastSignInTime!,
           email: firebaseUser.providerData[0].email!,
           name: userDoc.data()?.name || "",
         };
@@ -81,41 +74,10 @@ export function AuthProvider({ children }: PropsWithChildren): JSX.Element {
     return () => unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-      alert("Sign In failed: " + error.message);
-    }
-  };
-
-  const signUp = async (name: string, email: string, password: string) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const newUser = userCredential.user;
-
-      await setDoc(doc(FIRESTORE_DB, "Users", newUser.uid), {
-        name: name,
-        email: email,
-        userId: newUser.uid,
-        createdAt: newUser.metadata.creationTime!,
-        lastLoginAt: newUser.metadata.lastSignInTime!,
-      });
-    } catch (error: any) {
-      alert("Registration failed: " + error.message);
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
         user,
-        signIn,
-        signUp,
         signOut: () => {
           setUser(initialState);
           signOut(auth);

@@ -39,6 +39,7 @@
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.73.2",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-marquee-view": "^1.0.5",
     "react-native-progress": "^5.0.1",
     "react-native-raw-bottom-sheet": "^2.2.0",

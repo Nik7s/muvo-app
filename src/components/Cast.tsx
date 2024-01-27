@@ -12,7 +12,7 @@ interface CastProps {
   }[];
 }
 
-const CastItem = ({ person }: { person: any }) => (
+const CastItem: React.FC<{ person: any }> = ({ person }) => (
   <TouchableOpacity
     className="mr-4 items-center"
     onPress={() =>
@@ -50,7 +50,7 @@ const CastItem = ({ person }: { person: any }) => (
   </TouchableOpacity>
 );
 
-export default function Cast({ cast }: CastProps) {
+const Cast: React.FC<CastProps> = ({ cast }) => {
   return (
     <View className="my-6">
       <Text className="font-semibold text-white text-xl mx-4 mb-5">
@@ -68,4 +68,6 @@ export default function Cast({ cast }: CastProps) {
       />
     </View>
   );
-}
+};
+
+export default React.memo(Cast);

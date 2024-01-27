@@ -15,19 +15,19 @@ const { width, height } = Dimensions.get("window");
 import MarqueeView from "react-native-marquee-view";
 import { MediaData } from "@/assets/types";
 import { useGlobal } from "../context/global";
-interface mediaListProps {
+interface MediaListProps {
   title: string;
   data: any[];
   mediaType: string;
   hideSeeAll: boolean;
 }
 
-export default function MediaList({
+const MediaList: React.FC<MediaListProps> = ({
   title,
   data,
   mediaType,
   hideSeeAll,
-}: mediaListProps) {
+}) => {
   const { setSeeAll } = useGlobal();
   const router = useRouter();
 
@@ -91,4 +91,6 @@ export default function MediaList({
       />
     </View>
   );
-}
+};
+
+export default React.memo(MediaList);

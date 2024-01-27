@@ -9,10 +9,10 @@ interface EpisodeSectionProps {
   mediaId: string;
 }
 
-export default function EpisodeSection({
+const EpisodeSection: React.FC<EpisodeSectionProps> = ({
   episodesData,
   mediaId,
-}: EpisodeSectionProps) {
+}) => {
   return (
     <ScrollView className="px-3">
       {episodesData?.episodes
@@ -63,4 +63,6 @@ export default function EpisodeSection({
         ))}
     </ScrollView>
   );
-}
+};
+
+export default React.memo(EpisodeSection);

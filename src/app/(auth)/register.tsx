@@ -6,34 +6,46 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
-  Alert,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { FIREBASE_AUTH, FIRESTORE_DB } from "@/firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { FIRESTORE_DB as store, FIREBASE_AUTH as auth } from "@/firebaseConfig";
+import { Feather } from "@expo/vector-icons";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { useAuth } from "@/src/context/auth";
 
 var { width, height } = Dimensions.get("window");
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { signUp } = useAuth();
 
-  const handleRegister = async () => {
-    setLoading(true);
-    await signUp(name, email, password);
-    setLoading(false);
+  const signUp = async (name: string, email: string, password: string) => {
+    try {
+      setLoading(true);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const newUser = userCredential.user;
+      await setDoc(doc(store, "Users", newUser.uid), {
+        name: name,
+        email: email,
+        userId: newUser.uid,
+        createdAt: newUser.metadata.creationTime!,
+      });
+    } catch (error: any) {
+      alert("Registration failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,22 +71,22 @@ export default function RegisterScreen() {
         />
       </View>
       <View className="h-full w-full flex justify-center space-y-16 pb-10 z-10">
-        <View className="flex items-center">
-          <Text className="text-white font-bold tracking-widest text-6xl">
-            Register
+        <View className="flex mx-5">
+          <Text className="text-white font-bold tracking-widest text-5xl">
+            Create Account
           </Text>
         </View>
         <View className="flex items-center mx-5 space-y-4">
-          <View className="bg-white/10 p-5 rounded-2xl w-full">
+          <View className="bg-white/10 p-4 rounded-2xl w-full">
             <TextInput
               value={name}
               onChangeText={(text) => setName(text)}
-              placeholder="Name"
+              placeholder="Full Name"
               placeholderTextColor={"gray"}
               className="text-white"
             />
           </View>
-          <View className="bg-white/10 p-5 rounded-2xl w-full">
+          <View className="bg-white/10 p-4 rounded-2xl w-full">
             <TextInput
               value={email}
               onChangeText={(text) => setEmail(text)}
@@ -83,30 +95,35 @@ export default function RegisterScreen() {
               className="text-white"
             />
           </View>
-          <View className="bg-white/10 p-5 rounded-2xl w-full mb-3">
+          <View className="bg-white/10 p-4 rounded-2xl w-full mb-5">
             <TextInput
               value={password}
               onChangeText={(text) => setPassword(text)}
               placeholder="Password"
               placeholderTextColor={"gray"}
-              secureTextEntry
+              secureTextEntry={!showPassword}
               className="text-white"
             />
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-[18px]"
+            >
+              <Feather
+                name={showPassword ? "eye-off" : "eye"}
+                size={24}
+                color="#aeae"
+              />
+            </TouchableOpacity>
           </View>
-          <View className="w-full">
-            {loading ? (
-              <ActivityIndicator size="large" color="rgb(34 197 94)" />
-            ) : (
-              <TouchableOpacity
-                onPress={handleRegister}
-                className="w-full bg-green-400 p-3 rounded-2xl mb-5"
-              >
-                <Text className="text-xl font-bold text-white text-center">
-                  Sign Up
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
+          <TouchableOpacity
+            onPress={() => signUp(name, email, password)}
+            className="w-full bg-green-400 p-3 rounded-2xl mb-5 flex-row items-center justify-center space-x-4"
+          >
+            <Text className="text-xl font-bold text-white text-center">
+              Sign Up
+            </Text>
+            {loading && <ActivityIndicator color="#aeae" />}
+          </TouchableOpacity>
           <View className="flex-row justify-center">
             <Text className="text-neutral-300">Already have an account? </Text>
             <TouchableOpacity onPress={() => router.push("/login")}>

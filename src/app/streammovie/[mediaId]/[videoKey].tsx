@@ -55,7 +55,7 @@ export default function index() {
 
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
-      <SafeAreaView className={ios ? "-mb-2" : "mb-1"}>
+      <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
         <StatusBar backgroundColor="#000" />
         <SafeAreaView className="absolute z-20 w-full flex-row left-2 top-6">
           <TouchableOpacity onPress={() => router.back()} className="p-2">

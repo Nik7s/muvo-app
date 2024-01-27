@@ -4,7 +4,7 @@ import { WebView } from "react-native-webview";
 interface EmbeddedVideoProps {
   embedURL: string;
 }
-export default function EmbeddedVideo({ embedURL }: EmbeddedVideoProps) {
+const EmbeddedVideo: React.FC<EmbeddedVideoProps> = ({ embedURL }) => {
   return (
     <View>
       <WebView
@@ -19,4 +19,6 @@ export default function EmbeddedVideo({ embedURL }: EmbeddedVideoProps) {
       />
     </View>
   );
-}
+};
+
+export default EmbeddedVideo;

@@ -82,17 +82,17 @@ const WatchlistScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} className="space-y-2 px-3">
       <Text className="font-semibold text-xl text-white">Your WatchList</Text>
-      {watchlist.length === 0 ? (
-        <Text className="text-neutral-300">
-          It looks like you haven't added anything yet. Start building your
-          collection now to access them easily. 🚀
-        </Text>
-      ) : (
+      {watchlist.length != 0 ? (
         <View className="flex-row flex-wrap justify-between">
           {watchlist.map((item, index) => (
             <WatchlistItem key={index} item={item} />
           ))}
         </View>
+      ) : (
+        <Text className="text-neutral-300">
+          It looks like you haven't added anything yet. Start building your
+          collection now to access them easily. 🚀
+        </Text>
       )}
     </ScrollView>
   );

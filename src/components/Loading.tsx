@@ -4,7 +4,7 @@ import * as Progress from "react-native-progress";
 import { theme } from "../theme";
 const { width, height } = Dimensions.get("window");
 
-export default function Loading() {
+const Loading = () => {
   return (
     <View
       style={{ height, width }}
@@ -13,4 +13,6 @@ export default function Loading() {
       <Progress.CircleSnail thickness={4} size={80} color={theme.background} />
     </View>
   );
-}
+};
+
+export default Loading;

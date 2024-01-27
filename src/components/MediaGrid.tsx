@@ -17,7 +17,7 @@ interface MediaGridProps {
   mediaType?: string;
 }
 
-export default function MediaGrid({ title, data, mediaType }: MediaGridProps) {
+const MediaGrid: React.FC<MediaGridProps> = ({ title, data, mediaType }) => {
   const handlePress = (item: MediaData) => {
     const route =
       (item.media_type || mediaType) === "tv"
@@ -54,4 +54,6 @@ export default function MediaGrid({ title, data, mediaType }: MediaGridProps) {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default MediaGrid;

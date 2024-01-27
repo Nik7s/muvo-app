@@ -13,7 +13,7 @@ import { EmbeddedVideo } from "@/src/components";
 import { embedMovieUrl, fetchTVorMovieDetailsByID } from "@/api/media";
 import { MediaData } from "@/assets/types";
 
-export default function watch() {
+export default function Watch() {
   const { mediaId } = useLocalSearchParams<{ mediaId: string }>();
   const [movie, setMovie] = useState<MediaData | null>(null);
 

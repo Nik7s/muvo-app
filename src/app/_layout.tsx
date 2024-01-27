@@ -70,7 +70,6 @@ function RootLayoutNav() {
               name="streamtv/[mediaId]/[season]/[episode]/watch"
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="search" options={{ headerShown: false }} />
             <Stack.Screen
               name="seeAll"
               options={{

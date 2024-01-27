@@ -44,7 +44,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
   );
 };
 
-export default function TrendingMedias({ data }: TrendingMediasProps) {
+const TrendingMedias: React.FC<TrendingMediasProps> = ({ data }) => {
   return (
     <View className="mb-8">
       <Text className="text-white text-xl mx-4 mb-5">
@@ -65,4 +65,6 @@ export default function TrendingMedias({ data }: TrendingMediasProps) {
       />
     </View>
   );
-}
+};
+
+export default React.memo(TrendingMedias);
