@@ -4857,7 +4857,7 @@ expo-web-browser@~12.8.1:
     compare-urls "^2.0.0"
     url "^0.11.0"
 
-expo@~50.0.1:
+expo@^50.0.4:
   version "50.0.4"
   resolved "https://registry.yarnpkg.com/expo/-/expo-50.0.4.tgz#3ec5349a58b8b3264bc2f218d85b673beb352a99"
   integrity sha512-8QWBvYZyKFd7pHxbtri8/ZITBR19QbrW2IkezAhs3ZOHR2kluSgNfyo9ojAe7GnOnE8hCB6Xe83Dbm0R3Ealhw==
