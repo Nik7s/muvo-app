@@ -63,9 +63,10 @@ npx expo start
 ## Screenshots
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="https://res.cloudinary.com/dnp36kqdc/image/upload/v1706466926/Muvo/splashpage_ypfeya.jpg" width="300" height="600">
-  <img src="https://res.cloudinary.com/dnp36kqdc/image/upload/v1706466926/Muvo/splashpage1_ant20w.jpg" width="300" height="600">
-  <img src="https://res.cloudinary.com/dnp36kqdc/image/upload/v1706466926/Muvo/splashpage2_bash50.jpg" width="300" height="600">
+  <img src="https://res.cloudinary.com/dnp36kqdc/image/upload/v1706466926/Muvo/splashpage_ypfeya.jpg" width="150" height="300">
+  <img src="https://res.cloudinary.com/dnp36kqdc/image/upload/v1706466926/Muvo/splashpage1_ant20w.jpg" width="150" height="300">
+  <img src="https://res.cloudinary.com/dnp36kqdc/image/upload/v1706466926/Muvo/splashpage2_bash50.jpg" width="150" height="300">
+  <img src="https://res.cloudinary.com/dnp36kqdc/image/upload/v1706468908/Muvo/splashpage3_jntmrt.jpg" width="150" height="300">
 </div>
 
 ## Contributing
