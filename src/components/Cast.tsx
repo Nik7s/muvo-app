@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { fallbackPersonImage, image342 } from "@/api/media";
 import MarqueeView from "react-native-marquee-view";
 import * as WebBrowser from "expo-web-browser";
+import { FlashList } from "@shopify/flash-list";
 interface CastProps {
   cast: {
     id: number;
@@ -56,15 +57,15 @@ const Cast: React.FC<CastProps> = ({ cast }) => {
       <Text className="font-semibold text-white text-xl mx-4 mb-5">
         Top Cast
       </Text>
-      <FlatList
+      <FlashList
         horizontal
-        initialNumToRender={4}
         removeClippedSubviews
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
-        data={cast.slice(0, 10)}
+        data={cast}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => <CastItem key={index} person={item} />}
+        estimatedItemSize={100}
       />
     </View>
   );

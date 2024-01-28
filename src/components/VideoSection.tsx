@@ -1,9 +1,9 @@
-import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { VideoDataItem } from "@/assets/types";
 import MarqueeView from "react-native-marquee-view";
 import { router } from "expo-router";
-
+import { FlashList } from "@shopify/flash-list";
 interface VideoSectionProps {
   videosData: VideoDataItem[];
   title?: string;
@@ -46,16 +46,15 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   return (
     <View className="mx-4 mb-3">
-      <Text className="font-semibold text-xl text-white">{title}</Text>
-      <FlatList
-        data={videosData.slice(0, 10)}
+      <Text className="my-2 font-semibold text-xl text-white">{title}</Text>
+      <FlashList
+        data={videosData}
         horizontal
-        maxToRenderPerBatch={3}
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={renderVideoItem}
-        contentContainerStyle={{ marginTop: 10 }}
+        estimatedItemSize={200}
       />
     </View>
   );

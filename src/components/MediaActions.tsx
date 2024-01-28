@@ -28,24 +28,30 @@ const MediaActions: React.FC<MediaActionsProps> = ({
   const userId = auth.currentUser?.uid;
   const watchlistRef = collection(FIRESTORE_DB, "WatchList");
 
-  const checkWatchlist = useCallback(async () => {
-    const watchlistQuery = query(
-      watchlistRef,
-      where("userId", "==", userId),
-      where("mediaId", "==", mediaId),
-      where("mediaType", "==", mediaType)
-    );
-
-    const querySnapshot = await getDocs(watchlistQuery);
-    setIsWatchlist(!querySnapshot.empty);
-  }, [userId, mediaId, mediaType, isWatchlist, setIsWatchlist, watchlistRef]);
-
   useEffect(() => {
+    const checkWatchlist = async () => {
+      try {
+        const watchlistQuery = query(
+          watchlistRef,
+          where("userId", "==", userId),
+          where("mediaId", "==", mediaId),
+          where("mediaType", "==", mediaType)
+        );
+
+        const querySnapshot = await getDocs(watchlistQuery);
+        setIsWatchlist(!querySnapshot.empty);
+      } catch (error) {
+        console.error("Error checking watchlist:", error);
+      }
+    };
+
     checkWatchlist();
-  }, [checkWatchlist]);
+  }, [userId, mediaId, mediaType, setIsWatchlist, watchlistRef]);
 
   const handleWatchlist = async () => {
     try {
+      const tempIsWatchlist = isWatchlist;
+      setIsWatchlist(tempIsWatchlist);
       const userRef = userId ? doc(FIRESTORE_DB, "Users", userId) : null;
       if (!userRef) return;
       const userDoc = await getDoc(userRef);
@@ -58,7 +64,7 @@ const MediaActions: React.FC<MediaActionsProps> = ({
         where("mediaType", "==", mediaType)
       );
       const querySnapshot = await getDocs(watchlistQuery);
-      if (isWatchlist) {
+      if (tempIsWatchlist) {
         if (!querySnapshot.empty) {
           const docRef = querySnapshot.docs[0].ref;
           await deleteDoc(docRef);
@@ -87,6 +93,7 @@ const MediaActions: React.FC<MediaActionsProps> = ({
         `Error ${isWatchlist ? "removing from" : "adding to"} watchlist:`,
         error
       );
+      setIsWatchlist(!isWatchlist);
     }
   };
 

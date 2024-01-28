@@ -59,6 +59,7 @@ export default function ShowsScreen() {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ y: 0, animated: false });
     }
+    setSelectedSeason(1);
   }, [mediaId]);
 
   useEffect(() => {

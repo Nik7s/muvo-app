@@ -1,12 +1,12 @@
 import {
   View,
   Text,
-  FlatList,
   TouchableWithoutFeedback,
   Image,
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import React from "react";
 import { styles } from "../theme";
 import { useRouter } from "expo-router";
@@ -69,7 +69,7 @@ const MediaList: React.FC<MediaListProps> = ({
 
   return (
     <View className="mb-8 space-y-4">
-      <View className="mx-4 flex-row justify-between items-center">
+      <View className="mx-4 my-2 flex-row justify-between items-center">
         <Text className="font-semibold text-xl text-white">{title}</Text>
         {!hideSeeAll && (
           <TouchableOpacity onPress={handleSeeAll}>
@@ -79,15 +79,15 @@ const MediaList: React.FC<MediaListProps> = ({
           </TouchableOpacity>
         )}
       </View>
-      <FlatList
+      <FlashList
         horizontal
-        initialNumToRender={3}
         removeClippedSubviews
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
         data={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
+        estimatedItemSize={150}
       />
     </View>
   );
