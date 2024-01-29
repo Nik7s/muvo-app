@@ -98,7 +98,7 @@ const MediaActions: React.FC<MediaActionsProps> = ({
   };
 
   return (
-    <View className="flex-row mt-4 mx-6">
+    <View className="flex-row mx-4 mt-1">
       <TouchableOpacity
         className="flex-col items-center py-2 mx-3 rounded-full"
         onPress={handleWatchlist}

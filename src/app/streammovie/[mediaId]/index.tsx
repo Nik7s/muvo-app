@@ -117,7 +117,7 @@ export default function MovieScreen() {
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <StatusBar backgroundColor="black" />
       <SafeAreaView className="absolute z-20 w-full flex-row px-5">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.push("/")}>
           <MaterialIcons name="keyboard-backspace" size={26} color="white" />
         </TouchableOpacity>
       </SafeAreaView>

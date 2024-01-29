@@ -53,12 +53,6 @@ const EpisodeSection: React.FC<EpisodeSectionProps> = ({
                 </Text>
               </View>
             </View>
-            <Text
-              numberOfLines={3}
-              className="text-xs font-light leading-3 text-justify text-neutral-400"
-            >
-              {episode.overview}
-            </Text>
           </TouchableOpacity>
         ))}
     </ScrollView>

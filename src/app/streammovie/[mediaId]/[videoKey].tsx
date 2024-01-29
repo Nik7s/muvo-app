@@ -12,6 +12,7 @@ import { VideoSection, VideoTrailer, MediaGrid } from "@/src/components";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   fetchRecommendedTVorMovies,
+  fetchSimilarTVorMovies,
   fetchTVorMovieVideosByID,
 } from "@/api/media";
 import { VideoDataItem } from "@/assets/types";
@@ -29,10 +30,12 @@ export default function index() {
   const [videosData, setVideosData] = useState<VideoDataItem[]>([]);
   const [currentVideo, setCurrentVideo] = useState<VideoDataItem>();
   const [recommendedMovies, setRecommendedMovies] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
 
   useEffect(() => {
     getVideosData(mediaId);
     getRecommendedMovies(mediaId);
+    getSimilarMovies(mediaId);
   }, [mediaId, videoKey]);
 
   const getVideosData = async (id: string) => {
@@ -53,10 +56,17 @@ export default function index() {
     }
   };
 
+  const getSimilarMovies = async (id: string) => {
+    const data = await fetchSimilarTVorMovies("movie", id);
+    if (data && data.results) {
+      setSimilarMovies(data.results);
+    }
+  };
+
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
+      <StatusBar backgroundColor="#000" />
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
-        <StatusBar backgroundColor="#000" />
         <SafeAreaView className="absolute z-20 w-full flex-row left-2 top-6">
           <TouchableOpacity onPress={() => router.back()} className="p-2">
             <MaterialIcons name="keyboard-backspace" size={28} color="white" />
@@ -89,8 +99,17 @@ export default function index() {
             mediaType={mediaType}
           />
         )}
+        {similarMovies.length > 0 && (
+          <MediaGrid
+            title={"More Like This"}
+            data={similarMovies.slice(0, 6)}
+          />
+        )}
         {recommendedMovies.length > 0 && (
-          <MediaGrid title={"More Like This"} data={recommendedMovies} />
+          <MediaGrid
+            title={"Recommended"}
+            data={recommendedMovies.slice(0, 6)}
+          />
         )}
       </ScrollView>
     </LinearGradient>

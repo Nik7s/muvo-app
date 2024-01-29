@@ -31,7 +31,6 @@ import {
 } from "@/api/media";
 import { MediaData, VideoDataItem } from "@/assets/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Picker } from "@react-native-picker/picker";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function ShowsScreen() {
@@ -128,7 +127,7 @@ export default function ShowsScreen() {
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <StatusBar backgroundColor="black" />
       <SafeAreaView className="absolute z-20 w-full flex-row px-5">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.push("/")}>
           <MaterialIcons name="keyboard-backspace" size={26} color="white" />
         </TouchableOpacity>
       </SafeAreaView>
@@ -218,22 +217,35 @@ export default function ShowsScreen() {
                 mediaId={mediaId}
                 mediaType="tv"
               />
-              <Picker
-                selectedValue={selectedSeason}
-                onValueChange={(itemValue) => setSelectedSeason(itemValue)}
-                style={{ color: "white", width: 150 }}
-                dropdownIconColor={"rgb(34 197 94)"}
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                className="border-b border-zinc-800 my-2"
               >
                 {show?.seasons
                   ?.filter((season: any) => season.name !== "Specials")
                   .map((season: any, index) => (
-                    <Picker.Item
+                    <TouchableOpacity
                       key={index}
-                      label={season.name}
-                      value={season.season_number}
-                    />
+                      onPress={() => setSelectedSeason(season.season_number)}
+                      className={`mx-3 ${
+                        selectedSeason === season.season_number
+                          ? "border-b-[1px] border-[#8DC53E]"
+                          : ""
+                      }`}
+                    >
+                      <Text
+                        className={`${
+                          selectedSeason === season.season_number
+                            ? "text-white"
+                            : "text-neutral-500"
+                        } pb-2`}
+                      >
+                        {season.name}
+                      </Text>
+                    </TouchableOpacity>
                   ))}
-              </Picker>
+              </ScrollView>
               <EpisodeSection episodesData={episodesData} mediaId={mediaId} />
             </View>
           ) : null}

@@ -12,6 +12,7 @@ import { VideoSection, VideoTrailer, MediaGrid } from "@/src/components";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   fetchRecommendedTVorMovies,
+  fetchSimilarTVorMovies,
   fetchTVorMovieVideosByID,
 } from "@/api/media";
 import { VideoDataItem } from "@/assets/types";
@@ -29,10 +30,12 @@ export default function index() {
   const [videosData, setVideosData] = useState<VideoDataItem[]>([]);
   const [currentVideo, setCurrentVideo] = useState<VideoDataItem>();
   const [recommendedShows, setRecommendedShows] = useState([]);
+  const [similarShows, setSimilarShows] = useState([]);
 
   useEffect(() => {
     getVideosData(mediaId);
     getRecommendedShows(mediaId);
+    getSimilarShows(mediaId);
   }, [mediaId, videoKey]);
 
   const getVideosData = async (id: string) => {
@@ -50,6 +53,13 @@ export default function index() {
     const data = await fetchRecommendedTVorMovies(mediaType, id);
     if (data && data.results) {
       setRecommendedShows(data.results);
+    }
+  };
+
+  const getSimilarShows = async (id: string) => {
+    const data = await fetchSimilarTVorMovies("tv", id);
+    if (data && data.results) {
+      setSimilarShows(data.results);
     }
   };
 
@@ -89,8 +99,14 @@ export default function index() {
             mediaType={mediaType}
           />
         )}
+        {similarShows.length > 0 && (
+          <MediaGrid title={"More Like This"} data={similarShows.slice(0, 6)} />
+        )}
         {recommendedShows.length > 0 && (
-          <MediaGrid title={"More Like This"} data={recommendedShows} />
+          <MediaGrid
+            title={"Recommended"}
+            data={recommendedShows.slice(0, 6)}
+          />
         )}
       </ScrollView>
     </LinearGradient>
