@@ -1,7 +1,7 @@
 {
   "name": "muvo-app",
   "main": "expo-router/entry",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "scripts": {
     "start": "expo start",
     "postinstall": "patch-package",
