@@ -2,14 +2,15 @@
   "expo": {
     "name": "Muvo",
     "slug": "muvo",
-    "version": "1.2.0",
+    "version": "1.2.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain"
+      "resizeMode": "contain",
+      "backgroundColor": "#00000000"
     },
     "assetBundlePatterns": [
       "**/*"

@@ -68,8 +68,8 @@ const MediaList: React.FC<MediaListProps> = ({
   };
 
   return (
-    <View className="mb-8 space-y-4">
-      <View className="mx-4 my-2 flex-row justify-between items-center">
+    <View className="mb-6 space-y-4">
+      <View className="m-3 flex-row justify-between items-center">
         <Text className="font-semibold text-xl text-white">{title}</Text>
         {!hideSeeAll && (
           <TouchableOpacity onPress={handleSeeAll}>

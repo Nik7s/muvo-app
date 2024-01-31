@@ -1,24 +1,24 @@
-import React from "react";
-import { router } from "expo-router";
-import { Image, Platform, TouchableOpacity, View, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  Image,
+  Platform,
+  TouchableOpacity,
+  View,
+  Text,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import WatchList from "@/src/components/WatchList";
 import { useAuth } from "@/src/context/auth";
+import { SettingsModal } from "@/src/components";
 
 const ios = Platform.OS === "ios";
 
 export default function ProfileScreen() {
-  const { user, signOut } = useAuth();
-
-  const handleSignOut = () => {
-    try {
-      signOut();
-    } catch (error) {
-      console.error("Sign out error:", error);
-    }
-  };
+  const { user } = useAuth();
+  const [isModalVisible, setModalVisible] = useState(false);
 
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
@@ -26,37 +26,53 @@ export default function ProfileScreen() {
         <View className="flex-row justify-between items-center mx-4 my-2">
           <View>
             <Image
-              className="flex-1 w-32"
+              className="w-32 h-8"
               source={require("../../../assets/images/logo.png")}
             />
           </View>
-          <TouchableOpacity onPress={() => router.replace("/search")}>
-            <Feather name="search" size={30} color="white" />
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            className="flex-row items-center space-x-1"
+          >
+            <Ionicons name="settings-outline" size={22} color="white" />
+            <Text className="text-neutral-100">Settings</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <View className="flex-1 py-3">
-        <View className="space-y-6">
-          <View className="flex-row border-b border-neutral-800 pb-5 px-3">
-            <View className="flex-1">
-              <Text className="text-neutral-300 font-light text-base">
-                Welcome back,
-              </Text>
-              <Text className="text-neutral-100 font-medium text-xl">
-                {user?.name}
-              </Text>
-            </View>
-            <TouchableOpacity
-              className="bg-white rounded-md px-6 items-center justify-center"
-              onPress={handleSignOut}
-            >
-              <Text className="text-lg">Sign Out</Text>
-            </TouchableOpacity>
+      <SettingsModal
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+      />
+      <View className="flex-1 pb-3">
+        <View className="flex-row border-b border-neutral-800 pb-2 px-3">
+          <View className="flex-1">
+            <Text className="text-neutral-300 font-light text-base">
+              Welcome back,
+            </Text>
+            <Text className="text-neutral-100 font-medium text-xl">
+              {user?.name}
+            </Text>
           </View>
           <View>
-            <WatchList />
+            <Text className="text-neutral-300 font-light text-base">
+              Member since
+            </Text>
+            <Text className="text-neutral-100 font-medium text-xl">
+              {user?.createdAt &&
+                new Date(user.createdAt).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+            </Text>
           </View>
         </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
+        >
+          <WatchList />
+        </ScrollView>
       </View>
     </LinearGradient>
   );

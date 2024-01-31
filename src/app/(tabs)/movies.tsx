@@ -66,7 +66,7 @@ export default function MovieScreen() {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 30 }}
+          contentContainerStyle={{ paddingBottom: 40 }}
         >
           {trending.length > 0 && <TrendingMedias data={trending} />}
 
