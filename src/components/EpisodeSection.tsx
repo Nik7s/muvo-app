@@ -14,7 +14,7 @@ const EpisodeSection: React.FC<EpisodeSectionProps> = ({
   mediaId,
 }) => {
   return (
-    <ScrollView className="px-3">
+    <ScrollView className="px-3" removeClippedSubviews>
       {episodesData?.episodes
         ?.filter((episode: Episode) => {
           return new Date(episode.air_date) < new Date();
@@ -37,7 +37,7 @@ const EpisodeSection: React.FC<EpisodeSectionProps> = ({
                     : fallbackThumbnailImage,
                 }}
                 alt={`Episode ${episode.episode_number}`}
-                className="aspect-video rounded-md w-28"
+                className="aspect-video rounded-md w-32"
               />
               <View className="flex-1 items-start justify-center space-y-1">
                 <Text className="text-white text-base">{episode.name}</Text>

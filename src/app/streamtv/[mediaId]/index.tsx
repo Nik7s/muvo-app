@@ -151,7 +151,6 @@ export default function ShowsScreen() {
               outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
               controlsEnabled={false}
               isOverlay={true}
-              isMuted={true}
             />
           )}
         </View>
@@ -161,16 +160,23 @@ export default function ShowsScreen() {
             <Text className="text-white text-center text-5xl font-extralight tracking-widest">
               {show?.name}
             </Text>
-            <Text className="text-neutral-300 text-center italic font-extralight">
+            <Text className="text-neutral-200 text-center italic font-extralight">
               {show?.tagline}
             </Text>
           </View>
           {show?.id ? (
             <View>
-              <Text className="text-neutral-400 font-semibold text-base text-center">
-                {show?.first_air_date?.split("-")[0] || "N/A"} •{" "}
-                {`${show?.number_of_seasons} Seasons`} • {contentRating}
-              </Text>
+              <View className="flex-row items-center justify-center space-x-1">
+                <Text className="text-neutral-300 font-medium text-sm">
+                  {show?.first_air_date?.split("-")[0]} •
+                </Text>
+                <Text className="text-neutral-300 font-medium text-sm">
+                  {`${show?.number_of_seasons} Seasons`} •
+                </Text>
+                <Text className="text-neutral-100 bg-neutral-700 px-1.5 rounded-sm font-medium text-xs">
+                  {contentRating}
+                </Text>
+              </View>
               <View className="w-full my-4">
                 {!isComingSoon ? (
                   <Button
@@ -209,7 +215,7 @@ export default function ShowsScreen() {
                   </View>
                 ))}
               </View>
-              <Text className="text-neutral-400 mx-4 tracking-wide text-center">
+              <Text className="text-neutral-400 mx-4 tracking-wide text-justify">
                 {show?.overview}
               </Text>
               <MediaActions

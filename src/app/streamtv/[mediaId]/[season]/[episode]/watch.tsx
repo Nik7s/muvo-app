@@ -119,17 +119,17 @@ export default function Watch() {
               style={{ paddingEnd: 10 }}
             />
           </View>
+          {showOverview && (
+            <Text className="px-3 pt-2 text-neutral-400 text-justify text-xs pb-2">
+              {currentEpisodeData?.overview}
+            </Text>
+          )}
         </View>
       </SafeAreaView>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 10 }}
       >
-        {showOverview && (
-          <Text className="px-3 text-neutral-400 text-justify text-xs pb-2">
-            {currentEpisodeData?.overview}
-          </Text>
-        )}
         <MediaActions
           shareLink={`https://muvotv.vercel.app/shows/${mediaId}/${season}/${episode}`}
           mediaId={mediaId}

@@ -141,7 +141,6 @@ export default function MovieScreen() {
               outerViewClasses="mt-8 mx-2.5 overflow-hidden rounded-xl"
               controlsEnabled={false}
               isOverlay={true}
-              isMuted={true}
             />
           )}
         </View>
@@ -158,13 +157,20 @@ export default function MovieScreen() {
           </View>
           {movie?.id ? (
             <View>
-              <Text className="text-neutral-400 font-medium text-base text-center">
-                {movie?.release_date?.split("-")[0] || "N/A"} •{" "}
-                {`${Math.floor(Number(movie?.runtime) / 60)}h ${
-                  Number(movie?.runtime) % 60
-                }min`}{" "}
-                • {contentRating}
-              </Text>
+              <View className="flex-row items-center justify-center space-x-1">
+                <Text className="text-neutral-300 font-medium text-sm">
+                  {movie?.release_date?.split("-")[0]} •
+                </Text>
+                <Text className="text-neutral-300 font-medium text-sm">
+                  {`${Math.floor(Number(movie?.runtime) / 60)}h ${
+                    Number(movie?.runtime) % 60
+                  }min`}{" "}
+                  •
+                </Text>
+                <Text className="text-neutral-100 bg-neutral-700 px-1.5 rounded-sm font-medium text-xs">
+                  {contentRating}
+                </Text>
+              </View>
               <View className="w-full my-4">
                 {!isComingSoon ? (
                   <Button
