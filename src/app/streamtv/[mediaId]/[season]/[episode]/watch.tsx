@@ -1,24 +1,4 @@
 import {
-  View,
-  SafeAreaView,
-  Text,
-  StatusBar,
-  TouchableOpacity,
-  Platform,
-  ScrollView,
-  Switch,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { router, useLocalSearchParams } from "expo-router";
-import * as ScreenOrientation from "expo-screen-orientation";
-import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
-import {
-  EmbeddedVideo,
-  EpisodeSection,
-  MediaActions,
-  MediaGrid,
-} from "@/src/components";
-import {
   embedTvShowUrl,
   fetchRecommendedTVorMovies,
   fetchSimilarTVorMovies,
@@ -26,7 +6,26 @@ import {
   fetchTvEpisodeDetails,
 } from "@/api/media";
 import { MediaData } from "@/assets/types";
+import {
+  EmbeddedVideo,
+  EpisodeSection,
+  MediaActions,
+  MediaGrid,
+} from "@/src/components";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  Platform,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const ios = Platform.OS === "ios";
 
@@ -88,7 +87,7 @@ export default function Watch() {
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <StatusBar backgroundColor="black" />
-      <SafeAreaView className={`${ios ? "-mb-2" : "mb-3"}`}>
+      <SafeAreaView className={`${ios ? "-mb-2" : "mb-1"}`}>
         <SafeAreaView className="absolute z-20 left-2 top-6">
           <TouchableOpacity
             onPress={() => router.push(`/streamtv/${mediaId}`)}
@@ -101,7 +100,10 @@ export default function Watch() {
           <EmbeddedVideo
             embedURL={`${embedTvShowUrl}${mediaId}-${season}-${episode}`}
           />
-          <View className="flex-row items-center justify-between">
+          <Pressable
+            className="flex-row items-center justify-between"
+            onPress={() => setShowOverview(!showOverview)}
+          >
             <View>
               <Text className="text-white text-base font-semibold mx-3 mt-1">
                 {show?.name}
@@ -112,15 +114,14 @@ export default function Watch() {
               </Text>
             </View>
             <Entypo
-              onPress={() => setShowOverview(!showOverview)}
               name={showOverview ? "chevron-thin-up" : "chevron-thin-down"}
               size={20}
               color="#aeaeae"
               style={{ paddingEnd: 10 }}
             />
-          </View>
+          </Pressable>
           {showOverview && (
-            <Text className="px-3 pt-2 text-neutral-400 text-justify text-xs pb-2">
+            <Text className="px-3 py-2 text-neutral-400 text-justify text-xs">
               {currentEpisodeData?.overview}
             </Text>
           )}
