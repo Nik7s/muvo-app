@@ -48,13 +48,13 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     <View className="mx-4 mb-3">
       <Text className="my-2 font-semibold text-xl text-white">{title}</Text>
       <FlashList
-        data={videosData}
+        data={videosData.slice(0, 5)}
         horizontal
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={renderVideoItem}
-        estimatedItemSize={200}
+        estimatedItemSize={180}
       />
     </View>
   );

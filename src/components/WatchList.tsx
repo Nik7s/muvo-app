@@ -1,13 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { FIRESTORE_DB, FIREBASE_AUTH } from "@/firebase-config";
+  fallbackThumbnailImage,
+  fetchTVorMovieDetailsByID,
+  image342,
+} from "@/api/media";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "@/firebase-config";
+import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import { router, usePathname } from "expo-router";
 import {
   collection,
   deleteDoc,
@@ -18,15 +16,17 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  fallbackThumbnailImage,
-  fetchTVorMovieDetailsByID,
-  image342,
-} from "@/api/media";
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
-import { router, usePathname } from "expo-router";
-import RBSheet from "react-native-raw-bottom-sheet";
+  Dimensions,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import MarqueeView from "react-native-marquee-view";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const { height } = Dimensions.get("window");
 
@@ -240,7 +240,7 @@ const WatchlistItem: React.FC<WatchlistItemProps> = ({ item }) => {
             container: {
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
-              backgroundColor: "rgb(22, 25, 22)",
+              backgroundColor: "rgb(16, 16, 18)",
             },
           }}
         >

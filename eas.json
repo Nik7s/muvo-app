@@ -1,0 +1,24 @@
+{
+  "cli": {
+    "version": ">= 7.1.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_TMDB_API_URL": "https://api.themoviedb.org/3",
+        "EXPO_PUBLIC_TMDB_API_KEY": "50fcccf2b0a3ada63d6d39d59caf99ce"
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
+  }
+}

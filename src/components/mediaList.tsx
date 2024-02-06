@@ -87,7 +87,7 @@ const MediaList: React.FC<MediaListProps> = ({
         data={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
-        estimatedItemSize={150}
+        estimatedItemSize={140}
       />
     </View>
   );

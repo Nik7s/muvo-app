@@ -10,6 +10,7 @@ interface VideoTrailerProps {
   playerHeight: number;
   controlsEnabled: boolean;
   isOverlay: boolean;
+  isMuted: boolean;
 }
 
 const VideoTrailer: React.FC<VideoTrailerProps> = ({
@@ -19,11 +20,12 @@ const VideoTrailer: React.FC<VideoTrailerProps> = ({
   playerHeight,
   controlsEnabled,
   isOverlay,
+  isMuted,
 }) => {
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isVideoPlayable, setIsVideoPlayable] = useState(true);
-  const [isMute, setIsMute] = useState(false);
+  const [isMute, setIsMute] = useState(isMuted);
 
   useEffect(() => {
     setIsPlaying(true);

@@ -62,7 +62,7 @@ const Cast: React.FC<CastProps> = ({ cast }) => {
         removeClippedSubviews
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
-        data={cast}
+        data={cast.slice(0, 10)}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => <CastItem key={index} person={item} />}
         estimatedItemSize={100}

@@ -79,6 +79,7 @@ export default function index() {
             playerHeight={230}
             controlsEnabled={true}
             isOverlay={false}
+            isMuted={false}
           />
         </View>
         {currentVideo && (

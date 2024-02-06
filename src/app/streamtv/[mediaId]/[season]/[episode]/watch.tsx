@@ -87,7 +87,7 @@ export default function Watch() {
   return (
     <LinearGradient colors={["#000", "#011", "#121"]} className="flex-1">
       <StatusBar backgroundColor="black" />
-      <SafeAreaView className={`${ios ? "-mb-2" : "mb-1"}`}>
+      <SafeAreaView className={`${ios ? "-mb-2" : "mb-2"}`}>
         <SafeAreaView className="absolute z-20 left-2 top-6">
           <TouchableOpacity
             onPress={() => router.push(`/streamtv/${mediaId}`)}
