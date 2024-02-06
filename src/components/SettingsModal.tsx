@@ -120,7 +120,7 @@ const SettingsModal = ({ isVisible, onClose }: SettingsModalProps) => {
           </TouchableOpacity>
           <View className="flex-col items-center space-y-1">
             <Text className="font-extralight text-xs text-neutral-300">
-              App version: 1.2.4
+              App version: 1.2.6
             </Text>
             <Text className="font-extralight text-xs text-neutral-300">
               &copy; {new Date().getFullYear()} Muvo. All rights reserved.
